@@ -11,15 +11,15 @@ import PropTypes from "prop-types";
  * @Guard
  * @param props
  */
-export const GameGuard = () => {
-  if (localStorage.getItem("token")) {
-    
+export const RegisterGuard = () => {
+  if (!localStorage.getItem("token")) {
+
     return <Outlet />;
   }
-  
+
   return <Navigate to="/login" replace />;
 };
 
-GameGuard.propTypes = {
+RegisterGuard.propTypes = {
   children: PropTypes.node
 };
