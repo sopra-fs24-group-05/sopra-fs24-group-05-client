@@ -83,19 +83,21 @@ const Lobby = () => {
   // }, []);
 
   return (
-    <BaseContainer className="lobby container">
-      <div className="lobby">
-        <Button width="100%">
-          COURSE
-        </Button>
-        <Button width="100%">
-          MENSA
-        </Button>
-        <Button width="100%">
-          CREATE
-        </Button>
+    <div>
+      <div className="lobby container">
+        <div className="lobby box">
+          <div className="lobby mensa-image"></div>
+          <div className="lobby text-wrapper">MENSA</div>
+        </div>
+        <div className="lobby box">
+          <div className="lobby course-image"></div>
+          <div className="lobby text-wrapper">COURSE</div>
+        </div>
       </div>
-    </BaseContainer>
+      <div className="lobby create-box">
+        <div className="lobby create-text-wrapper">CREATE</div>
+      </div>
+    </div>
   );
 };
 

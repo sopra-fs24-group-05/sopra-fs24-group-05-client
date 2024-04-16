@@ -75,6 +75,7 @@ const Login = () => {
           <FormField
             label="Password"
             value={password}
+            isPassword={true}
             onChange={(n) => setPassword(n)}
           />
           <div className="login button-container">

@@ -55,6 +55,10 @@ const Register = () => {
     }
   };
 
+  const backToLogin = () => {
+    navigate("/login");
+  }
+
   return (
     <BaseContainer className="register">
       <div className="register container">
@@ -82,6 +86,12 @@ const Register = () => {
               onClick={() => doRegister()}
             >
               Confirm
+            </Button>
+            <Button className="register"
+              width="100%"
+              onClick={() => backToLogin()}
+            >
+              Back
             </Button>
           </div>
         </div>
