@@ -3,7 +3,7 @@ import { api, handleError } from "helpers/api";
 import User from "models/User";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
-import "styles/views/Login.scss";
+import "styles/views/Register.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
@@ -15,10 +15,10 @@ specific components that belong to the main one in the same file.
  */
 const FormField = (props) => {
   return (
-    <div className="login field">
-      <label className="login label">{props.label}</label>
+    <div className="register field">
+      <label className="register label">{props.label}</label>
       <input
-        className="login input"
+        className="register input"
         placeholder="enter here.."
         value={props.value}
         type={props.isPassword ? "password" : "text"}
@@ -35,38 +35,30 @@ FormField.propTypes = {
   isPassword: PropTypes.bool,
 };
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
+  const [registerCode, setRegisterCode] = useState<string>(null);
 
-  const doLogin = async () => {
+  const doRegister = async () => {
     try {
-      const requestBody = JSON.stringify({ username, password });
-      const response = await api.post("/users", requestBody);
+      const requestBody = JSON.stringify({ username, password, registerCode });
+      await api.post("/register", requestBody);
 
-      // Get the returned user and update a new object.
-      const user = new User(response.data);
-
-      // Store the token into the local storage.
-      localStorage.setItem("token", user.token);
-
-      navigate("/lobby");
+      alert("Register Done!");
+      navigate("/login");
     } catch (error) {
       alert(
-        `Something went wrong during the login: \n${handleError(error)}`
+        `Something went wrong during the registration: \n${handleError(error)}`
       );
     }
   };
 
-  const naviRegister = () => {
-    navigate("/register");
-  };
-
   return (
-    <BaseContainer className="login">
-      <div className="login container">
-        <div className="login form">
+    <BaseContainer className="register">
+      <div className="register container">
+        <div className="register form">
           <FormField
             label="Username"
             value={username}
@@ -74,23 +66,22 @@ const Login = () => {
           />
           <FormField
             label="Password"
-            value={password}
+            value={[password]}
+            isPassword={true}
             onChange={(n) => setPassword(n)}
           />
-          <div className="login button-container">
-            <Button className="login"
+          <FormField
+            label="Register Code (optional)"
+            value={registerCode}
+            onChange={(n) => setRegisterCode(n)}
+          />
+          <div className="register button-container">
+            <Button className="register"
               disabled={!username || !password}
               width="100%"
-              onClick={() => doLogin()}
+              onClick={() => doRegister()}
             >
-              Login
-            </Button>
-            <Button className="register"
-              // disabled={!username || !name}
-              width="100%"
-              onClick={() => naviRegister()}
-            >
-              Register
+              Confirm
             </Button>
           </div>
         </div>
@@ -102,4 +93,4 @@ const Login = () => {
 /**
  * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
  */
-export default Login;
+export default Register;
