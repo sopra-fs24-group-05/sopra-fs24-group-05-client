@@ -2,12 +2,32 @@
 
 .header {
   &.container {
-    @include center;
+    background-color:#262632;
+    height:100px;
+    width:100%;
+    top:0px;
+    padding:0px;
+    position:relative;
   }
 
   &.title {
-    font-weight: bold;
-    color: $background;
-    text-align: center;
+    color: white;
+    position: absolute;
+    &.rankeverything {
+      font-family:"Kaushan Script",Helvetica;
+      font-weight:normal;
+      font-size:60px;
+      padding:0px;
+      top:-25px;
+      left:40px;
+    }
+    &.search {
+      font-family:'Times New Roman', Times, serif;
+      font-weight:normal;
+      font-size:40px;
+      top:5px;
+      left:600px;
+    }
   }
+  
 }
