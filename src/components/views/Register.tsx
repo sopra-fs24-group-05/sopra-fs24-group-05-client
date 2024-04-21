@@ -44,7 +44,7 @@ const Register = () => {
   const doRegister = async () => {
     try {
       const requestBody = JSON.stringify({ username, password, registerCode });
-      await api.post("/register", requestBody);
+      await api.post("/users/registration", requestBody);
 
       alert("Register Done!");
       navigate("/login");

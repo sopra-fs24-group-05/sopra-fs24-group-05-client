@@ -6,6 +6,10 @@ import {LoginGuard} from "../routeProtectors/LoginGuard";
 import {RegisterGuard} from "../routeProtectors/RegisterGuard";
 import Login from "../../views/Login";
 import Register from "../../views/Register"
+import Create from "../../views/Create";
+import {CreateGuard} from "../routeProtectors/CreateGuard";
+import Comment from "../../views/Comment";
+import {CommentGuard} from "../routeProtectors/CommentGuard";
 
 /**
  * Main router of your application.
@@ -31,6 +35,14 @@ const AppRouter = () => {
 
         <Route path="/register" element={<RegisterGuard />}>
           <Route path="/register" element={<Register/>} />
+        </Route>
+
+        <Route path="/create" element={<CreateGuard />}>
+          <Route path="/create" element={<Create/>} />
+        </Route>
+
+        <Route path="/comment" element={<CommentGuard />}>
+          <Route path="/comment" element={<Comment/>} />
         </Route>
 
         <Route path="/" element={
