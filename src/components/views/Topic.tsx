@@ -166,7 +166,7 @@ const Comment = () => {
     alert("Are you sure that you want to go back without saving?");
     navigate("/lobby");
   } 
-  alert(itemintroduction);
+
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -210,7 +210,7 @@ const Comment = () => {
       </div> 
       <div className="comment button-containerout">
           <Button className="back"
-              width="13%"
+              width="10%"
               onClick={() => doSubmit()}
             >
               BACK

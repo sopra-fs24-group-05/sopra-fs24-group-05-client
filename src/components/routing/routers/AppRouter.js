@@ -6,8 +6,8 @@ import {LoginGuard} from "../routeProtectors/LoginGuard";
 import {RegisterGuard} from "../routeProtectors/RegisterGuard";
 import Login from "../../views/Login";
 import Register from "../../views/Register"
-import Create from "../../views/Create";
-import {CreateGuard} from "../routeProtectors/CreateGuard";
+import CreateItem from "../../views/CreateItem";
+import {CreateItemGuard} from "../routeProtectors/CreateItemGuard";
 import Comment from "../../views/Comment";
 import {CommentGuard} from "../routeProtectors/CommentGuard";
 
@@ -37,8 +37,8 @@ const AppRouter = () => {
           <Route path="/register" element={<Register/>} />
         </Route>
 
-        <Route path="/create" element={<CreateGuard />}>
-          <Route path="/create" element={<Create/>} />
+        <Route path="/createItem" element={<CreateItemGuard />}>
+          <Route path="/createItem" element={<CreateItem/>} />
         </Route>
 
         <Route path="/comment" element={<CommentGuard />}>

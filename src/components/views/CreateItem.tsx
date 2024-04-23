@@ -3,7 +3,7 @@ import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
-import "styles/views/Create.scss";
+import "styles/views/CreateItem.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
@@ -13,12 +13,30 @@ however be sure not to clutter your files with an endless amount!
 As a rule of thumb, use one file per component and only add small,
 specific components that belong to the main one in the same file.
  */
+const FormFieldTopic = (props) => {
+  return (
+    <div className="createItem field">
+      <label className="createItem label">{props.label}</label>
+      <input 
+        readOnly={true}
+        className="createItem topic"
+        value={props.value}
+      />
+    </div>
+  );
+};
+FormFieldTopic.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  isPassword: PropTypes.bool,
+};
 const FormField = (props) => {
   return (
-    <div className="create field">
-      <label className="create label">{props.label}</label>
+    <div className="createItem field">
+      <label className="createItem label">{props.label}</label>
       <input
-        className="create input"
+        className="createItem input"
         placeholder="enter here.."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
@@ -34,10 +52,10 @@ FormField.propTypes = {
 };
 const FormFieldIntroduction = (props) => {
   return (
-    <div className="create field">
-      <label className="create label">{props.label}</label>
+    <div className="createItem field">
+      <label className="createItem label">{props.label}</label>
       <textarea
-        className="create inputintroduction"
+        className="createItem inputintroduction"
         placeholder="enter here.."
         rows="4"
         cols="50"
@@ -54,7 +72,7 @@ FormFieldIntroduction.propTypes = {
   isPassword: PropTypes.bool,
 };
 
-const Create = () => {
+const CreateItem = () => {
   const navigate = useNavigate();
   const [topicname, setTopicname] = useState<string>(null);
   const [itemname, setItemname] = useState<string>(null);
@@ -81,13 +99,12 @@ const Create = () => {
   
 
   return (
-    <BaseContainer className="create">
-      <div className="create container">
-        <div className="create form">
-          <FormField
+    <BaseContainer className="createItem">
+      <div className="createItem container">
+        <div className="createItem form">
+          <FormFieldTopic
             label="Topic"
             value={topicname}
-            onChange={(un: string) => setTopicname(un)}
           />
           <FormField
             label="Item(No more than 50 words)"
@@ -101,7 +118,7 @@ const Create = () => {
             isPassword={true}
             onChange={(n) => setItemintroduction(n)}
           />
-          <div className="create button-container">
+          <div className="createItem button-container">
             <Button className="back"
               width="100%"
               onClick={() => doBack()}
@@ -125,4 +142,4 @@ const Create = () => {
 /**
  * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
  */
-export default Create;
+export default CreateItem;
