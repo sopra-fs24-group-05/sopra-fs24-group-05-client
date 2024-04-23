@@ -13,24 +13,16 @@ however be sure not to clutter your files with an endless amount!
 As a rule of thumb, use one file per component and only add small,
 specific components that belong to the main one in the same file.
  */
-const FormFieldTopic = (props) => {
+const FormFieldTitle = (props) => {
   return (
-    <div className="createItem field">
-      <label className="createItem label">{props.label}</label>
-      <input 
-        readOnly={true}
-        className="createItem topic"
-        value={props.value}
-      />
-    </div>
+      <h1>
+        {props.value}
+      </h1>
   );
 };
-FormFieldTopic.propTypes = {
-  label: PropTypes.string,
+FormFieldTitle.propTypes = {
   value: PropTypes.string,
-  onChange: PropTypes.func,
-  isPassword: PropTypes.bool,
-};
+}
 const FormField = (props) => {
   return (
     <div className="createItem field">
@@ -100,12 +92,13 @@ const CreateItem = () => {
 
   return (
     <BaseContainer className="createItem">
+      <div className="createItem titlecontainer">
+         <FormFieldTitle
+          value={`${topicname}`}
+        />
+      </div>
       <div className="createItem container">
         <div className="createItem form">
-          <FormFieldTopic
-            label="Topic"
-            value={topicname}
-          />
           <FormField
             label="Item(No more than 50 words)"
             value={itemname}
@@ -132,9 +125,9 @@ const CreateItem = () => {
             >
               CREATE
             </Button>
+            </div>
           </div>
         </div>
-      </div>
     </BaseContainer>
   );
 };
