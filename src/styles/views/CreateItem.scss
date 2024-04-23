@@ -1,6 +1,6 @@
 @import "../theme";
 
-.create {
+.createItem {
   &.container {
     min-height: 300px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
@@ -28,6 +28,16 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  &.topic {
+    height: 35px;
+    padding-left: 15px;
+    padding-right:15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    margin-bottom: 20px;
+    color: $textColor;
   }
   &.input {
     height: 35px;
