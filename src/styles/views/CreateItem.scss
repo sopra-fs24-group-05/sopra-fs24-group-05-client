@@ -1,6 +1,12 @@
 @import "../theme";
 
 .createItem {
+  &.titlecontainer {
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    flex-direction: column;
+    margin-top: 20px;
+  }
   &.container {
     min-height: 300px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
