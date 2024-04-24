@@ -114,10 +114,6 @@ const Profile = () => {
     }
   };
 
-//   useEffect(() => {
-    
-//   }, []);
-
   if (currentUser.id === 1) { // only for test
   // if (currentUser.identity === 0)
     // student
