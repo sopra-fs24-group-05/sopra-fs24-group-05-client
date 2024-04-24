@@ -7,51 +7,6 @@
     flex-direction: column;
     margin-top: 20px;
   }
-  &.chatspacecontainer {
-    position:relative;
-    left:62.5%;
-    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
-    @include center;
-    flex-direction: column;
-    margin-top: 20px;
-  }
-  &.chatspaceform {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 40%;
-    max-width: 80em;
-    font-size: 16px;
-    font-weight: 300;
-    padding-left: 37px;
-    padding-right: 37px;
-    border-radius: 0.75em;
-    background-color: $background;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    box-shadow: $dropShadow;
-  }
-  &.chatspace {
-    height: 400px;
-    padding-left: 15px;
-    padding-right:15px;
-    margin-left: -4px;
-    margin-top:10px;
-    margin-bottom:10px;
-    border: 2em;
-    border-radius: 0.75em;
-    background-color:white;
-  }
-  &.chatinput {
-    text-align: left;
-    vertical-align:top;
-    height: 30px;
-    padding-left: 15px;
-    padding-right:15px;
-    margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
-    color: $textColor;
-  }
   &.introductioncontainer {
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
