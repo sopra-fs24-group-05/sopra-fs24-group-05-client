@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import "../../styles/ui/UserLogo.scss";
 
 export const UserLogo = props => {
+  localStorage.setItem("isSelf", "1");
+  
   return (
     <svg {...props} className={`user-logo ${props.className ?? ""}`}>
       <g>

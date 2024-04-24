@@ -47,10 +47,11 @@ const Login = () => {
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
+      const userStr = JSON.stringify(user);
 
       // Store the token into the local storage.
-      localStorage.setItem("usingtoken", user.token);
-      localStorage.setItem("usingId", user.id);
+      localStorage.setItem("currentToken", user.token);
+      localStorage.setItem("currentUser", userStr);
 
       navigate("/lobby");
     } catch (error) {

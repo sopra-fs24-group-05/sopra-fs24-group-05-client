@@ -3,6 +3,7 @@ import {UserLogo} from "../ui/UserLogo";
 import PropTypes from "prop-types";
 import "../../styles/views/Header.scss";
 import {SearchLogo} from "../ui/SearchLogo";
+import {useNavigate} from "react-router-dom";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -12,13 +13,19 @@ import {SearchLogo} from "../ui/SearchLogo";
  * https://react.dev/learn/your-first-component and https://react.dev/learn/passing-props-to-a-component 
  * @FunctionalComponent
  */
-const Header = props => (
-  <div className="header container" style={{height: props.height}}>
-    <h1 className="header title rankeverything">Rank Everything!</h1>
-    <SearchLogo width="100px" height="100px"/>
-    <UserLogo width="100px" height="100px"/>
-  </div>
-);
+
+const Header = props => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="header container" style={{height: props.height}}>
+      <h1 className="header title rankeverything" onClick={() => navigate("lobby")}>Rank Everything!</h1>
+      <SearchLogo width="100px" height="100px"/>
+      <UserLogo width="100px" height="100px" onClick={() => navigate("/profile")}/>
+    </div>
+  );
+};
+  
 
 Header.propTypes = {
   height: PropTypes.string,
