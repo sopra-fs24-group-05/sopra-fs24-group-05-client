@@ -3,6 +3,7 @@ import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
+import { ChatButton } from "components/ui/ChatButton";
 import "styles/views/Comment.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
@@ -16,9 +17,9 @@ specific components that belong to the main one in the same file.
  */
 const FormFieldTitle = (props) => {
   return (
-    <h1>
-      {props.value}
-    </h1>
+      <h1>
+        {props.value}
+      </h1>
   );
 };
 FormFieldTitle.propTypes = {
@@ -92,11 +93,11 @@ const Comment = () => {
   const [topic, setTopic] = useState<string>(null);
   const [itemname, setItemname] = useState<string>(null);
   const [topicname, setTopicname] = useState<string>(null);
-  const [itemintroduction, setItemintroduction] = useState<string>(null);
-  const [commentrate, setCommentrate] =useState<string>(null);
-  const [commentstatus, setCommentstatus] =useState<boolean>(0);
+  const [itemIntroduction, setitemIntroduction] = useState<string>(null);
+  const [commentRate, setcommentRate] =useState<string>(null);
+  const [commentStatus, setCommentStatus] =useState<boolean>(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
 
   useEffect(() => {
@@ -135,23 +136,23 @@ const Comment = () => {
     fetchData();
   }, []);
 
-  const toggleChatBox = () => {
+  const ChatSpace = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSendMessage = () => {
-    if (message.trim() !== "") {
-      setChatHistory([...chatHistory, { text: message, sender: "Me" }]);
-      setMessage("");
+    if (message.trim() !== '') {
+      setChatHistory([...chatHistory, { text: message, sender: 'Me' }]);
+      setMessage('');
     }
   };
 
   const doSubmit = async () => {
     try {
       const commentitemId=localStorage.getItem("clickitemId");
-      const commentownerId = localStorage.getItem("usingId");
-      setCommentstatus(1);
-      const requestBody = JSON.stringify({ commentstatus, commentrate, commentitemId, commentownerId, comment});
+      const commentOwnerId = localStorage.getItem("usingid");
+      setCommentStatus(1);
+      const requestBody = JSON.stringify({ commentStatus, commentRate, commentitemId, commentOwnerId, comment});
       await api.post("/comments", requestBody);
       alert("Successfully create!");
       navigate("/lobby");
@@ -166,7 +167,6 @@ const Comment = () => {
     alert("Are you sure that you want to go back without saving?");
     navigate("/lobby");
   } 
-
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -174,11 +174,36 @@ const Comment = () => {
           value={`${itemname}/${topicname}`}
         />
       </div>
+      <ChatButton onClick={ChatSpace}>
+
+ChatSpace
+</ChatButton>
+{isOpen && (
+<div style={{ border: '1px solid black', padding: '10px', marginTop: '10px' }}>
+  <div style={{ height: '200px', overflowY: 'scroll' }}>
+    {/* 显示聊天历史 */}
+    {chatHistory.map((msg, index) => (
+      <div key={index}>
+        <strong>{msg.sender}: </strong> {msg.text}
+      </div>
+    ))}
+  </div>
+  <input
+    type="text"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    placeholder="Type your message..."
+  />
+  <button onClick={handleSendMessage}>
+    Send
+  </button>
+</div>
+)}
       <div className="comment introductioncontainer">
         <div className="comment introductionform">
           <FormFieldIntroduction
             label="INTRODUCTION"
-            value={itemintroduction}
+            value={itemIntroduction}
           />
         </div>
       </div>
@@ -204,40 +229,17 @@ const Comment = () => {
         <div className="comment displayform">
           <FormFieldDisplay
             label="ALL COMMENTS"
-            value={itemintroduction}
+            value={itemIntroduction}
           />
         </div>
       </div> 
       <div className="comment button-containerout">
-        <Button className="back"
-          width="13%"
-          onClick={() => doSubmit()}
-        >
-          BACK
-        </Button>
-      </div>
-      <div>
-        {/* chat功能未完成 */}
-        <button onClick={toggleChatBox}>Toggle Chat</button>
-        {isOpen && (
-          <div style={{ border: "1px solid black", padding: "10px", marginTop: "10px" }}>
-            <div style={{ height: "200px", overflowY: "scroll" }}>
-              {/* 显示聊天历史 */}
-              {chatHistory.map((msg, index) => (
-                <div key={index}>
-                  <strong>{msg.sender}: </strong> {msg.text}
-                </div>
-              ))}
-            </div>
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-            />
-            <button onClick={handleSendMessage}>Send</button>
-          </div>
-        )}
+          <Button className="back"
+              width="13%"
+              onClick={() => doSubmit()}
+            >
+              BACK
+          </Button>
       </div>
     </BaseContainer>
   );

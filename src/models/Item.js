@@ -3,10 +3,10 @@
  */
 class Item {
   constructor(data = {}) {
-    this.itemownerId = null;
+    this.itemOwnerId = null;
     this.itemname = null;
     this.itemId = null;
-    this.itemintroduction = null;
+    this.itemIntroduction = null;
     Object.assign(this, data);
   }
 }

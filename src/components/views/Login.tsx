@@ -49,10 +49,11 @@ const Login = () => {
       const user = new User(response.data);
       const userStr = JSON.stringify(user);
 
-      // Store the token into the local storage.
-      localStorage.setItem("currentToken", user.token);
+      // Store the token,the into the local storage.
+      localStorage.setItem("token", user.token);
       localStorage.setItem("currentUser", userStr);
-
+      localStorage.setItem("currentId",user.userId);
+    
       navigate("/lobby");
     } catch (error) {
       alert(

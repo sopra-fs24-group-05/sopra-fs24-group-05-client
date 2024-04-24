@@ -1,6 +1,6 @@
 @import "../theme";
 
-.createItem {
+.createTopic {
   &.titlecontainer {
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
@@ -12,7 +12,7 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 100px;
   }
   &.form {
     display: flex;
@@ -20,7 +20,7 @@
     justify-content: center;
     width: 60%;
     max-width: 80em;
-    height: 40em;
+    height: 20em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -59,18 +59,6 @@
     text-align: left;
     vertical-align:top;
     height: 200px;
-    padding-left: 15px;
-    padding-right:15px;
-    margin-left: -4px;
-    border: none;
-    border-radius: 0.75em;
-    margin-bottom: 20px;
-    color: $textColor;
-  }
-  &.outputintroduction {
-    text-align: left;
-    vertical-align:top;
-    height: 100px;
     padding-left: 15px;
     padding-right:15px;
     margin-left: -4px;
