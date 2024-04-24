@@ -10,6 +10,9 @@ import CreateItem from "../../views/CreateItem";
 import {CreateItemGuard} from "../routeProtectors/CreateItemGuard";
 import Comment from "../../views/Comment";
 import {CommentGuard} from "../routeProtectors/CommentGuard";
+import Profile from "../../views/Profile";
+import { ProfileGuard } from "../routeProtectors/ProfileGuard";
+import Header from "../../views/Header";
 
 /**
  * Main router of your application.
@@ -23,8 +26,8 @@ import {CommentGuard} from "../routeProtectors/CommentGuard";
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
-
         <Route path="/lobby/*" element={<LobbyGuard />}>
           <Route path="/lobby/*" element={<LobbyRouter base="/lobby"/>} />
         </Route>
@@ -43,6 +46,10 @@ const AppRouter = () => {
 
         <Route path="/comment" element={<CommentGuard />}>
           <Route path="/comment" element={<Comment/>} />
+        </Route>
+
+        <Route path="/profile" element={<ProfileGuard />}>
+          <Route path="/profile" element={<Profile/>} />
         </Route>
 
         <Route path="/" element={

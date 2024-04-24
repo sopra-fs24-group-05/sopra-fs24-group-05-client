@@ -24,21 +24,9 @@ const Lobby = () => {
   const [users, setUsers] = useState<User[]>(null);
   const [token, setToken] = useState<string>(localStorage.getItem("token"));
 
-  const logout = async () => {
-    try {
-      const requestBody = JSON.stringify({ token })
-      api.post("/login", requestBody);
-
-      localStorage.removeItem("token");
-
-      navigate("/login");
-    } catch (error) {
-      alert(
-        `Something went wrong during the logout: \n${handleError(error)}`
-      );
-    }
-  };
-
+  const doCreate = () => {
+    navigate("/createItem");
+  }
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
   // this can be achieved by leaving the second argument an empty array.
@@ -95,7 +83,7 @@ const Lobby = () => {
         </div>
       </div>
       <div className="lobby create-box">
-        <div className="lobby create-text-wrapper">CREATE</div>
+        <div className="lobby create-text-wrapper" onClick={() => doCreate()}>CREATE</div>
       </div>
     </div>
   );
