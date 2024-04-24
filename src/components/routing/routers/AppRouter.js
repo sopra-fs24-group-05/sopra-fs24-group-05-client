@@ -8,6 +8,8 @@ import Login from "../../views/Login";
 import Register from "../../views/Register"
 import CreateItem from "../../views/CreateItem";
 import {CreateItemGuard} from "../routeProtectors/CreateItemGuard";
+import CreateTopic from "../../views/CreateTopic";
+import {CreateTopicGuard} from "../routeProtectors/CreateTopicGuard";
 import Comment from "../../views/Comment";
 import {CommentGuard} from "../routeProtectors/CommentGuard";
 import Profile from "../../views/Profile";
@@ -50,6 +52,10 @@ const AppRouter = () => {
 
         <Route path="/profile" element={<ProfileGuard />}>
           <Route path="/profile" element={<Profile/>} />
+        </Route>
+
+        <Route path="/createTopic" element={<CreateTopicGuard />}>
+          <Route path="/createTopic" element={<CreateTopic/>} />
         </Route>
 
         <Route path="/" element={

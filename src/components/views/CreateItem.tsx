@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import {useNavigate} from "react-router-dom";
@@ -6,6 +6,7 @@ import { Button } from "components/ui/Button";
 import "styles/views/CreateItem.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
+import {Topic} from "types";
 
 /*
 It is possible to add multiple components inside a single file,
@@ -15,11 +16,31 @@ specific components that belong to the main one in the same file.
  */
 const FormFieldTitle = (props) => {
   return (
-    <h1>
-      {props.value}
-    </h1>
+      <h1>
+        {props.value}
+      </h1>
   );
 };
+
+const FormFieldtopicIntroduction = (props) => {
+  return (
+    <div className="createItem field">
+      <label className="createItem label">{props.label}</label>
+      <textarea
+        readOnly={true}
+        className="createItem outputintroduction"
+        rows="4"
+        cols="50"
+        value={props.value}
+      />
+    </div>
+  );
+};
+FormFieldtopicIntroduction.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+};
+
 FormFieldTitle.propTypes = {
   value: PropTypes.string,
 }
@@ -40,8 +61,8 @@ FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  isPassword: PropTypes.bool,
 };
+
 const FormFieldIntroduction = (props) => {
   return (
     <div className="createItem field">
@@ -61,19 +82,54 @@ FormFieldIntroduction.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  isPassword: PropTypes.bool,
 };
 
 const CreateItem = () => {
   const navigate = useNavigate();
+  const [topic, setTopic] = useState<Topic>(null);
   const [topicname, setTopicname] = useState<string>(null);
+  const [topicIntroduction, settopicIntroduction] = useState<string>(null);
   const [itemname, setItemname] = useState<string>(null);
-  const [itemintroduction, setItemintroduction] = useState<string>(null);
+  const [itemIntroduction, setitemIntroduction] = useState<string>(null);
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const topicId=localStorage.getItem("clicktopicId");
+        //This page will be reached only by clicking the item you want to comment
+        const responsetopic = await api.get(`/topic/${topicId}`);
+
+        // Get the returned item 
+        setTopic(topic);
+        // // This is just some data for you to see what is available.
+        // // Feel free to remove it.
+        // console.log("request to:", response.request.responseURL);
+        // console.log("status code:", response.status);
+        // console.log("status text:", response.statusText);
+        // console.log("requested data:", response.data);
+
+        // // See here to get more data.
+        // console.log(response);
+      } catch (error) {
+        console.error(
+          `Something went wrong while fetching the topic: \n${handleError(
+            error
+          )}`
+        );
+      //   console.error("Details:", error);
+      //   alert(
+      //     "Something went wrong while fetching the item! See the console for details."
+      //   );
+      // }
+      }
+    }
+    fetchData();
+  }, []);
 
   const doCreate = async () => {
     try {
-      const commentownerId = localStorage.getItem("usingId");
-      const requestBody = JSON.stringify({ commentownerId, topicname, itemname, itemintroduction });
+      const commentOwnerId = localStorage.getItem("usingId");
+      const requestBody = JSON.stringify({ commentOwnerId, topicname, itemname, itemIntroduction });
       await api.post("/items", requestBody);
       alert("Successfully create!");
       navigate("/lobby");
@@ -93,23 +149,25 @@ const CreateItem = () => {
   return (
     <BaseContainer className="createItem">
       <div className="createItem titlecontainer">
-        <FormFieldTitle
+         <FormFieldTitle
           value={`${topicname}`}
         />
       </div>
       <div className="createItem container">
         <div className="createItem form">
+          <FormFieldtopicIntroduction
+            label="Topic Introduction"
+            value={topicIntroduction}
+          />
           <FormField
             label="Item(No more than 50 words)"
             value={itemname}
-            isPassword={true}
             onChange={(n) => setItemname(n)}
           />
           <FormFieldIntroduction
             label="Item Introduction(No more than 250 words)"
-            value={itemintroduction}
-            isPassword={true}
-            onChange={(n) => setItemintroduction(n)}
+            value={itemIntroduction}
+            onChange={(n) => setitemIntroduction(n)}
           />
           <div className="createItem button-container">
             <Button className="back"
@@ -119,7 +177,7 @@ const CreateItem = () => {
               BACK
             </Button>
             <Button className="create"
-              disabled={!topicname || !itemname || !itemintroduction}
+              disabled={!itemname || !topicIntroduction }
               width="100%"
               onClick={() => doCreate()}
             >
