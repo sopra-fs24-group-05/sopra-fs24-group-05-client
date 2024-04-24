@@ -15,6 +15,8 @@ import {CommentGuard} from "../routeProtectors/CommentGuard";
 import Profile from "../../views/Profile";
 import { ProfileGuard } from "../routeProtectors/ProfileGuard";
 import Header from "../../views/Header";
+import Topic from "../../views/Topic"
+import { TopicGuard } from "../routeProtectors/TopicGuard";
 
 /**
  * Main router of your application.
@@ -52,6 +54,10 @@ const AppRouter = () => {
 
         <Route path="/profile" element={<ProfileGuard />}>
           <Route path="/profile" element={<Profile/>} />
+        </Route>
+
+        <Route path="/topic" element={<TopicGuard />}>
+          <Route path="/topic" element={<Topic/>} />
         </Route>
 
         <Route path="/createTopic" element={<CreateTopicGuard />}>
