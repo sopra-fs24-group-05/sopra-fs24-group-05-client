@@ -25,7 +25,6 @@ const FormFieldTitle = (props) => {
 FormFieldTitle.propTypes = {
   value: PropTypes.string,
 };
-//Title 部分·未完成
 const FormFieldIntroduction = (props) => {
   return (
     <div className="comment field">
@@ -175,29 +174,38 @@ const Comment = () => {
           value={`${itemname}/${topicname}`}
         />
       </div>
-      <ChatButton onClick={ChatSpace}>
+      <ChatButton 
+        width="25%"
+        onClick={ChatSpace}
+      >
         ChatSpace
       </ChatButton>
       {isOpen && (
-        <div style={{ border: "1px solid black", padding: "10px", marginTop: "10px" }}>
-          <div style={{ height: "200px", overflowY: "scroll" }}>
-            {/* 显示聊天历史 */}
-            {chatHistory.map((msg, index) => (
-              <div key={index}>
-                <strong>{msg.sender}: </strong> {msg.text}
-              </div>
-            ))}
+        <div className="comment chatspacecontainer">
+          <div className="comment chatspaceform">
+            <div className="comment chatspace">
+              {/* 显示聊天历史 */}
+              {chatHistory.map((msg, index) => (
+                <div key={index}>
+                  <strong>{msg.sender}: </strong> {msg.text}
+                </div>
+              ))}
+            </div>
+            <input
+              className="comment chatinput"
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message..."
+            />
+            <Button 
+            width="75%"
+            onClick={handleSendMessage}
+            >
+              Send
+            </Button>
           </div>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
-          />
-          <button onClick={handleSendMessage}>
-            Send
-          </button>
-        </div>
+        </div>  
       )}
       <div className="comment introductioncontainer">
         <div className="comment introductionform">
