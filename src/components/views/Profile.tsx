@@ -100,9 +100,10 @@ const Profile = () => {
 
   const logout = async () => {
     try {
-      const token = localStorage.getItem("usertoken")  
-      const requestBody = JSON.stringify({ token });
-      api.put("/login", requestBody);
+      const token = localStorage.getItem("token");
+      alert(token);
+      const requestBody = JSON.stringify({ token:token });
+      api.put("/users/logout", requestBody);
   
       localStorage.removeItem("token");
   

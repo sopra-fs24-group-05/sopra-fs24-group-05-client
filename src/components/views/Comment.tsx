@@ -17,9 +17,9 @@ specific components that belong to the main one in the same file.
  */
 const FormFieldTitle = (props) => {
   return (
-      <h1>
-        {props.value}
-      </h1>
+    <h1>
+      {props.value}
+    </h1>
   );
 };
 FormFieldTitle.propTypes = {
@@ -97,7 +97,7 @@ const Comment = () => {
   const [commentRate, setcommentRate] =useState<string>(null);
   const [commentStatus, setCommentStatus] =useState<boolean>(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
 
   useEffect(() => {
@@ -105,8 +105,8 @@ const Comment = () => {
       try {
         const itemId=localStorage.getItem("clickitemId");
         //This page will be reached only by clicking the item you want to comment
-        const responseitem = await api.get(`/item/${itemId}`);
-        const responsetopic = await api.get(`/topic/${itemId}`);
+        const responseitem = await api.get("/item/${itemId}");
+        const responsetopic = await api.get("/topic/${itemId}");
 
         // Get the returned item 
         setItem(responseitem.data);
@@ -141,9 +141,9 @@ const Comment = () => {
   };
 
   const handleSendMessage = () => {
-    if (message.trim() !== '') {
-      setChatHistory([...chatHistory, { text: message, sender: 'Me' }]);
-      setMessage('');
+    if (message.trim() !== "") {
+      setChatHistory([...chatHistory, { text: message, sender: "Me" }]);
+      setMessage("");
     }
   };
 
@@ -167,6 +167,7 @@ const Comment = () => {
     alert("Are you sure that you want to go back without saving?");
     navigate("/lobby");
   } 
+  
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -175,30 +176,29 @@ const Comment = () => {
         />
       </div>
       <ChatButton onClick={ChatSpace}>
-
-ChatSpace
-</ChatButton>
-{isOpen && (
-<div style={{ border: '1px solid black', padding: '10px', marginTop: '10px' }}>
-  <div style={{ height: '200px', overflowY: 'scroll' }}>
-    {/* 显示聊天历史 */}
-    {chatHistory.map((msg, index) => (
-      <div key={index}>
-        <strong>{msg.sender}: </strong> {msg.text}
-      </div>
-    ))}
-  </div>
-  <input
-    type="text"
-    value={message}
-    onChange={(e) => setMessage(e.target.value)}
-    placeholder="Type your message..."
-  />
-  <button onClick={handleSendMessage}>
-    Send
-  </button>
-</div>
-)}
+        ChatSpace
+      </ChatButton>
+      {isOpen && (
+        <div style={{ border: "1px solid black", padding: "10px", marginTop: "10px" }}>
+          <div style={{ height: "200px", overflowY: "scroll" }}>
+            {/* 显示聊天历史 */}
+            {chatHistory.map((msg, index) => (
+              <div key={index}>
+                <strong>{msg.sender}: </strong> {msg.text}
+              </div>
+            ))}
+          </div>
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type your message..."
+          />
+          <button onClick={handleSendMessage}>
+            Send
+          </button>
+        </div>
+      )}
       <div className="comment introductioncontainer">
         <div className="comment introductionform">
           <FormFieldIntroduction
@@ -234,18 +234,18 @@ ChatSpace
         </div>
       </div> 
       <div className="comment button-containerout">
-          <Button className="back"
-              width="13%"
-              onClick={() => doSubmit()}
-            >
-              BACK
-          </Button>
+        <Button className="back"
+          width="13%"
+          onClick={() => doSubmit()}
+        >
+          BACK
+        </Button>
       </div>
     </BaseContainer>
   );
 };
 
 /**
- * You can get access to the history object's properties via the useLocation, useNavigate, useParams, ... hooks.
+ * You can get access to the history object"s properties via the useLocation, useNavigate, useParams, ... hooks.
  */
 export default Comment;

@@ -16,9 +16,9 @@ specific components that belong to the main one in the same file.
  */
 const FormFieldTitle = (props) => {
   return (
-      <h1>
-        {props.value}
-      </h1>
+    <h1>
+      {props.value}
+    </h1>
   );
 };
 
@@ -87,7 +87,7 @@ FormFieldIntroduction.propTypes = {
 const CreateItem = () => {
   const navigate = useNavigate();
   const [topic, setTopic] = useState<Topic>(null);
-  const [topicname, setTopicname] = useState<string>(null);
+  const [topicname, setTopicname] = useState<string>(localStorage.getItem("currentTopic"));
   const [topicIntroduction, settopicIntroduction] = useState<string>(null);
   const [itemname, setItemname] = useState<string>(null);
   const [itemIntroduction, setitemIntroduction] = useState<string>(null);
@@ -142,14 +142,14 @@ const CreateItem = () => {
 
   const doBack = () => {
     alert("Are you sure that you want to go back without saving?");
-    navigate("/lobby");
+    navigate("/topic");
   } 
   
 
   return (
     <BaseContainer className="createItem">
       <div className="createItem titlecontainer">
-         <FormFieldTitle
+        <FormFieldTitle
           value={`${topicname}`}
         />
       </div>

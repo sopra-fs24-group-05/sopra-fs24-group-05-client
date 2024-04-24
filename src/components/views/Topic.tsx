@@ -49,7 +49,7 @@ FormFieldDisplay.propTypes = {
 const Topic = () => {
   const navigate = useNavigate();
   const [items, setItems] = useState<Item[]>(null);
-  const [topicname, setTopicname] = useState<string>(null);
+  const [topicname, setTopicname] = useState<string>(localStorage.getItem("currentTopic"));
 
 
   useEffect(() => {
@@ -88,12 +88,11 @@ const Topic = () => {
 
  
   const doBack = () => {
-    alert("Are you sure that you want to go back without saving?");
+    localStorage.removeItem("currentTopic");
     navigate("/lobby");
   } 
   
   const doCreateItem = () => {
-    alert("Are you sure that you want to go back without saving?");
     navigate("/CreateItem");
   } 
 
@@ -122,7 +121,7 @@ const Topic = () => {
           width="20%"
           onClick={() => doCreateItem()}
         >
-          CreateItem
+          Create Item
         </Button>
       </div>
     </BaseContainer>

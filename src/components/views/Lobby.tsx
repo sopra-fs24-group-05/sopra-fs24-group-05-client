@@ -25,7 +25,7 @@ const Lobby = () => {
   const [token, setToken] = useState<string>(localStorage.getItem("token"));
 
   const doCreate = () => {
-    navigate("/createItem");
+    navigate("/createTopic");
   }
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
@@ -75,11 +75,11 @@ const Lobby = () => {
       <div className="lobby container">
         <div className="lobby box">
           <div className="lobby mensa-image"></div>
-          <div className="lobby text-wrapper">MENSA</div>
+          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "MENSA");navigate("/topic");}}>MENSA</div>
         </div>
         <div className="lobby box">
           <div className="lobby course-image"></div>
-          <div className="lobby text-wrapper">COURSE</div>
+          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "COURSE");navigate("/topic");}}>COURSE</div>
         </div>
       </div>
       <div className="lobby create-box">
