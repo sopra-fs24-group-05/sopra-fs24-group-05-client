@@ -15,9 +15,9 @@ specific components that belong to the main one in the same file.
  */
 const FormFieldTitle = (props) => {
   return (
-      <h1>
-        {props.value}
-      </h1>
+    <h1>
+      {props.value}
+    </h1>
   );
 };
 FormFieldTitle.propTypes = {
@@ -93,7 +93,7 @@ const CreateItem = () => {
   return (
     <BaseContainer className="createItem">
       <div className="createItem titlecontainer">
-         <FormFieldTitle
+        <FormFieldTitle
           value={`${topicname}`}
         />
       </div>
@@ -125,9 +125,9 @@ const CreateItem = () => {
             >
               CREATE
             </Button>
-            </div>
           </div>
         </div>
+      </div>
     </BaseContainer>
   );
 };

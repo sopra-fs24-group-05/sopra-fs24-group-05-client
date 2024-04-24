@@ -16,9 +16,9 @@ specific components that belong to the main one in the same file.
  */
 const FormFieldTitle = (props) => {
   return (
-      <h1>
-        {props.value}
-      </h1>
+    <h1>
+      {props.value}
+    </h1>
   );
 };
 FormFieldTitle.propTypes = {
@@ -96,7 +96,7 @@ const Comment = () => {
   const [commentrate, setCommentrate] =useState<string>(null);
   const [commentstatus, setCommentstatus] =useState<boolean>(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
 
   useEffect(() => {
@@ -140,9 +140,9 @@ const Comment = () => {
   };
 
   const handleSendMessage = () => {
-    if (message.trim() !== '') {
-      setChatHistory([...chatHistory, { text: message, sender: 'Me' }]);
-      setMessage('');
+    if (message.trim() !== "") {
+      setChatHistory([...chatHistory, { text: message, sender: "Me" }]);
+      setMessage("");
     }
   };
 
@@ -166,6 +166,7 @@ const Comment = () => {
     alert("Are you sure that you want to go back without saving?");
     navigate("/lobby");
   } 
+
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -208,36 +209,36 @@ const Comment = () => {
         </div>
       </div> 
       <div className="comment button-containerout">
-          <Button className="back"
-              width="13%"
-              onClick={() => doSubmit()}
-            >
-              BACK
-          </Button>
+        <Button className="back"
+          width="13%"
+          onClick={() => doSubmit()}
+        >
+          BACK
+        </Button>
       </div>
       <div>
-      {/* chat功能未完成 */}
-      <button onClick={toggleChatBox}>Toggle Chat</button>
-      {isOpen && (
-        <div style={{ border: '1px solid black', padding: '10px', marginTop: '10px' }}>
-          <div style={{ height: '200px', overflowY: 'scroll' }}>
-            {/* 显示聊天历史 */}
-            {chatHistory.map((msg, index) => (
-              <div key={index}>
-                <strong>{msg.sender}: </strong> {msg.text}
-              </div>
-            ))}
+        {/* chat功能未完成 */}
+        <button onClick={toggleChatBox}>Toggle Chat</button>
+        {isOpen && (
+          <div style={{ border: "1px solid black", padding: "10px", marginTop: "10px" }}>
+            <div style={{ height: "200px", overflowY: "scroll" }}>
+              {/* 显示聊天历史 */}
+              {chatHistory.map((msg, index) => (
+                <div key={index}>
+                  <strong>{msg.sender}: </strong> {msg.text}
+                </div>
+              ))}
+            </div>
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message..."
+            />
+            <button onClick={handleSendMessage}>Send</button>
           </div>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
-          />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </BaseContainer>
   );
 };
