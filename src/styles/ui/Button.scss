@@ -25,4 +25,10 @@
   background-color: #8c8c8c;
   transition: all 0.3s ease;
   margin: 0 50px;
+  &.followButton {
+    position: absolute;
+    top: calc(100% - 60px);
+    right: 50%;
+    transform: translateX(-50%);
+  }
 }

@@ -52,6 +52,10 @@ const AppRouter = () => {
           <Route path="/comment" element={<Comment/>} />
         </Route>
 
+        {/* <Route path="/profile/:userId" element={<ProfileGuard />}>
+          <Route path="/profile/:userId" element={<Profile/>} />
+        </Route> */}
+
         <Route path="/profile" element={<ProfileGuard />}>
           <Route path="/profile" element={<Profile/>} />
         </Route>
