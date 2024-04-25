@@ -28,6 +28,29 @@ button {
   outline: none;
 }
 
+ul {
+  background-color: white;
+  border: 1px solid #ccc; 
+  padding: 5px; 
+  list-style-type: none; 
+  overflow-y: auto;
+  max-height: 70px;
+}
+
+li {
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  // line-height: 30px;
+  margin: 0; 
+  padding: 5px;
+  background-color: white; 
+  cursor: pointer;
+}
+li:hover {
+  background-color: lightblue;
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;

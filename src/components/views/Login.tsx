@@ -52,7 +52,7 @@ const Login = () => {
       // Store the token,the into the local storage.
       localStorage.setItem("token", user.token);
       localStorage.setItem("currentUser", userStr);
-      localStorage.setItem("currentId",user.userId);
+      localStorage.setItem("currentId",user.id);
     
       navigate("/lobby");
     } catch (error) {

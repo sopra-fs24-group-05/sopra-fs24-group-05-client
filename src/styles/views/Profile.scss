@@ -12,9 +12,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: -85px;
     width: 60%;
     max-width: 80em;
-    height: 35em;
+    height: 50em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -23,13 +24,31 @@
     background-color: $background;
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
+    position: relative;
+  }
+  &.follows-container {
+    display: flex;
+    // height: 100px;
+    &.list {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      &.title {
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+    &.list + &.list {
+      margin-left: 40px;
+    }
   }
   &.field {
     display: flex;
     flex-direction: column;
     justify-content: center;
     outline: auto;
-    // align-items: center;
+    // overflow: hidden;
   }
   &.input {
     height: 35px;
@@ -64,14 +83,25 @@
     margin-top: 2em;
   }
   &.avatar-container {
+    position: absolute;
+    top: 10;
+    right: 100px;
+    margin-top: 10px;
     margin-right: 10px;
-    // outline: auto;
+    cursor: pointer;
   }
   &.avatar {
     border-radius: 50%; 
-    width: 50px; 
-    height: 50px;
+    width: 100px; 
+    height: 100px;
   }
+  &.followButton {
+    position: absolute;
+    top: calc(100% + 10px); /* 位于 avatar 的正下方，加上一些间距 */
+    left: 50%; /* 水平居中 */
+    transform: translateX(-50%); /* 水平居中 */
+  }
+  
 
 .playerprofile {
   &.container {
@@ -105,18 +135,5 @@
     // font-family: $fontMono;
     font-weight: 300;
   }
-}
-.textbox-container {
-  display: flex;
-  align-items: center;
-}
-  
-.textbox {
-  width: 200px; /* 设置文本框的宽度 */
-  height: 40px; /* 设置文本框的高度 */
-  border: 1px solid #ccc; /* 设置文本框的边框样式 */
-  border-radius: 5px; /* 设置文本框的边框圆角 */
-  background-color: white; /* 设置文本框的背景颜色 */
-  margin-right: 10px; /* 设置文本框之间的间距 */
 }
 }
