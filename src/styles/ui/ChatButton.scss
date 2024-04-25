@@ -1,16 +1,9 @@
 @import "../theme";
 
 .chatbutton {
-  // &:hover {
-  //   transform: translateY(-2px);
-  // }
-  &:disabled {
-    cursor: default;
-    opacity: 0.4;
-    // &:hover {
-    //   transform: none;
-    // }
-  }
+  position:relative;
+  left:95%;
+  top:20%;
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
