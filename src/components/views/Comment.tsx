@@ -199,8 +199,8 @@ const Comment = () => {
               placeholder="Type your message..."
             />
             <Button 
-            width="75%"
-            onClick={handleSendMessage}
+              width="75%"
+              onClick={handleSendMessage}
             >
               Send
             </Button>
