@@ -82,9 +82,9 @@ const Lobby = () => {
           <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "COURSE");localStorage.setItem("currentTopicId", "2");navigate(`/topic/${localStorage.getItem("currentTopicId")}`);}}>COURSE</div>
         </div>
       </div>
-      <div className="lobby create-box">
+      {/* <div className="lobby create-box">
         <div className="lobby create-text-wrapper" onClick={() => doCreate()}>CREATE</div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -106,7 +106,7 @@ const Comment = () => {
       try {
         const itemId = localStorage.getItem("currentItemId");
         //This page will be reached only by clicking the item you want to comment
-        const responseItem = await api.get(`/item/${itemId}`);
+        const responseItem = await api.get(`/items/getByItemId/${itemId}`);
 
         // Get the returned item 
         setItem(responseItem.data);
@@ -171,13 +171,19 @@ const Comment = () => {
   const doBack = () => {
     localStorage.removeItem("currentItem");
     localStorage.removeItem("currentItemId");
-    navigate("/lobby");
+    navigate(`/topic/${localStorage.getItem("currentTopicId")}`)
   } 
 
   const doCheckProfile = (commentOwnerId) => {
     navigate(`/profile/${commentOwnerId}`);
   }
   
+  const doFollow = (currentUserId, currentItemId) => {
+    const followItemId = currentItemId;
+    api.put(`/users/followItem/${currentUserId}`, { followItemId });
+    alert("Successfully follow!");
+  }
+
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -224,6 +230,14 @@ const Comment = () => {
             label="INTRODUCTION"
             value={itemIntroduction}
           />
+          <div className="comment button-containerin">
+            <Button className="submit"
+              width="25%"
+              onClick={() => doFollow(localStorage.getItem("currentUserId"), localStorage.getItem("currentItemId"))}
+            >
+              Follow
+            </Button>
+          </div>
         </div>
       </div>
       <div className="comment commentcontainer">

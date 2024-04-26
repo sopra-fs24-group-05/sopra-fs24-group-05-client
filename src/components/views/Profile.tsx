@@ -55,11 +55,11 @@ const UserFormField = (props) => {
     // api.put("/user/profile", imageUrl);
   };
   
-  const followUser = async () => {
+  const followUser = () => {
     try{
       const userId = localStorage.getItem("currentUserId");
       const followUserId = props.user.userId;
-      await api.put(`/users/follow/${userId}`, { followUserId });
+      api.put(`/users/followUser/${userId}`, { followUserId });
       alert("Successfully follow!");
     } catch (error){
       alert(
@@ -117,8 +117,10 @@ UserFormField.propTypes = {
 };
 
 const FormField = (props) => {  
+  const { profileId } = useParams();
+  const navigate = useNavigate();
   const [followUserList, setFollowUserList] = useState<User[]>([]);
-  const [followTopicList, setFollowTopicList] = useState<Topic[]>([]);
+  const [followItemList, setFollowItemList] = useState<Topic[]>([]);
   const [pubTopicList, setPubTopicList] = useState<Topic[]>([]);
   const [pubCommentList, setPubCommentList] = useState<Comment[]>([]);
   const [bannedList, setBannedList] = useState<User[]>([]);
@@ -126,24 +128,31 @@ const FormField = (props) => {
 
   useEffect(() => {
     const fetchListData = async () => {
-      // const userData = [new User({userId: 1, username: "aaa"}), new User({userId: 2, username: "bbb"}), new User({userId: 3, username: "ccc"})];
-      // const topicData = [new Topic({topicId: 1, topicname: "COURSE"}), new Topic({topicId: 2, topicname: "MENSA"}), new Topic({topicId: 3, topicname: "ASVZ"})];
-      // const commentData = [new Comment({comment: "shit"}), new Comment({comment: "good"})];
-      // const bannedUserData = [new User({userId: 1, username: "aaa"}), new User({userId: 2, username: "bbb"}), new User({userId: 3, username: "ccc"})];
-      // const teacherTopicData = [new Topic({topicId: 1, topicname: "COURSE"}), new Topic({topicId: 2, topicname: "MENSA"}), new Topic({topicId: 3, topicname: "ASVZ"})];
-      // setFollowUserList(userData);
-      // setFollowTopicList(topicData);
-      // setPubTopicList(topicData);
-      // setPubCommentList(commentData);
-      // setBannedList(bannedUserData);
-      // setTeacherTopicList(teacherTopicData);
       try {
-        const userId = localStorage.getItem("currentUserId");
-        const response = await api.get(`/users/${userId}/followUsers`);
-        setFollowUserList(response.data);
+        const userId = profileId;
+        const responseFollowUserList = await api.get(`/users/${userId}/followUsers`);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        setFollowUserList(responseFollowUserList.data);
       } catch (error) {
         alert(
-          `Something went wrong during the logout: \n${handleError(error)}`
+          `Something went wrong during the get: \n${handleError(error)}`
+        );
+      }
+    };
+
+    fetchListData();
+  }, []);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const userId = profileId;
+        const responseFollowItemList = await api.get(`/users/${userId}/followItems`);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        setFollowItemList(responseFollowItemList.data);
+      } catch (error) {
+        alert(
+          `Something went wrong during the get: \n${handleError(error)}`
         );
       }
     };
@@ -151,6 +160,23 @@ const FormField = (props) => {
     fetchListData();
   }, []);
   
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const userId = profileId;
+        const responseCommentList = await api.get(`/comments/userId/${userId}`);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        setPubCommentList(responseCommentList.data);
+      } catch (error) {
+        alert(
+          `Something went wrong during the get: \n${handleError(error)}`
+        );
+      }
+    };
+
+    fetchListData();
+  }, []);
+
   
   let content = null;
   switch (props.module) {
@@ -158,14 +184,24 @@ const FormField = (props) => {
     content = (
       <div className="profile follows-container">
         <ul className="profile follows-container list">
-          {followUserList.map((user, index) => (
-            <li key={index}>{user.username}</li>
+          {followUserList && followUserList.map((user, index) => (
+            <li 
+              key={index} 
+              // onClick={() => {navigate(`/profile/${user.userId}`);window.location.reload();}}
+            >
+              {user.username}
+            </li>
           ))}
         </ul>
         {/* <h3 className="profile follows-container list title">topics</h3> */}
         <ul className="profile follows-container list">
-          {followTopicList.map((topic, index) => (
-            <li key={index}>{topic.topicname}</li>
+          {followItemList && followItemList.map((item, index) => (
+            <li 
+              key={index} 
+              // onClick={() => navigate(`/comment/${item.itemId}`)}
+            >
+              {item.itemname}
+            </li>
           ))}
         </ul>
         {/* <h3 className="profile follows-container list title">topics</h3> */}
@@ -184,8 +220,8 @@ const FormField = (props) => {
   case "Comments":
     content = (
       <ul>
-        {pubCommentList.map((comment, index) => (
-          <li key={index}>{comment.comment}</li>
+        {pubCommentList && pubCommentList.map((comment, index) => (
+          <li key={index}>{comment.content}</li>
         ))}
       </ul>
     )
@@ -239,7 +275,7 @@ const Profile = () => {
       const requestBody = JSON.stringify({ token:token });
       api.put("/users/logout", requestBody);
   
-      localStorage.removeItem("token");
+      localStorage.clear();
   
       navigate("/login");
     } catch (error) {
