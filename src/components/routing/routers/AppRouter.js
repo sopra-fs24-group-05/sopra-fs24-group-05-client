@@ -48,20 +48,21 @@ const AppRouter = () => {
           <Route path="/createItem" element={<CreateItem/>} />
         </Route>
 
-        <Route path="/comment" element={<CommentGuard />}>
-          <Route path="/comment" element={<Comment/>} />
+        {/* TBD: id -> itemId */}
+        <Route path="/comment/:id" element={<CommentGuard />}>
+          <Route path="/comment/:id" element={<Comment/>} />
         </Route>
 
-        {/* <Route path="/profile/:userId" element={<ProfileGuard />}>
-          <Route path="/profile/:userId" element={<Profile/>} />
+        <Route path="/profile/:profileId" element={<ProfileGuard />}>
+          <Route path="/profile/:profileId" element={<Profile/>} />
+        </Route>
+
+        {/* <Route path="/profile" element={<ProfileGuard />}>
+          <Route path="/profile" element={<Profile/>} />
         </Route> */}
 
-        <Route path="/profile" element={<ProfileGuard />}>
-          <Route path="/profile" element={<Profile/>} />
-        </Route>
-
-        <Route path="/topic" element={<TopicGuard />}>
-          <Route path="/topic" element={<Topic/>} />
+        <Route path="/topic/:topicId" element={<TopicGuard />}>
+          <Route path="/topic/:topicId" element={<Topic/>} />
         </Route>
 
         <Route path="/createTopic" element={<CreateTopicGuard />}>

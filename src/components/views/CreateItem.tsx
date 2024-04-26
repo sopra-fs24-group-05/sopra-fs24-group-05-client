@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { api, handleError } from "helpers/api";
-// import Topic from "models/Topic";
+import Topic from "models/Topic";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/CreateItem.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import {Topic} from "types";
+// import {Topic} from "types";
 
 /*
 It is possible to add multiple components inside a single file,
@@ -95,12 +95,13 @@ const CreateItem = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const topicId=localStorage.getItem("clicktopicId");
+        const topicId = localStorage.getItem("currentTopicId");
         //This page will be reached only by clicking the item you want to comment
-        const responsetopic = await api.get(`/topic/${topicId}`);
+        const responseTopic = await api.get(`/topic/${topicId}`);
 
         // Get the returned item 
-        setTopic(topic);
+        setTopic(responseTopic.data);
+        settopicIntroduction(responseTopic.data.topicIntroduction);
         // // This is just some data for you to see what is available.
         // // Feel free to remove it.
         // console.log("request to:", response.request.responseURL);
@@ -128,10 +129,12 @@ const CreateItem = () => {
 
   const doCreate = async () => {
     try {
-      const commentOwnerId = localStorage.getItem("usingId");
-      const requestBody = JSON.stringify({ commentOwnerId, topicname, itemname, itemIntroduction });
+      const itemTopicId = topic.topicId;
+      const requestBody = JSON.stringify({ itemTopicId, itemname, itemIntroduction });
       await api.post("/items", requestBody);
       alert("Successfully create!");
+      localStorage.removeItem("currentTopic");
+      localStorage.removeItem("currentTopicId");
       navigate("/lobby");
     } catch (error) {
       alert(
@@ -142,7 +145,7 @@ const CreateItem = () => {
 
   const doBack = () => {
     alert("Are you sure that you want to go back without saving?");
-    navigate("/topic");
+    navigate("/topic/:topicId");
   } 
   
 
@@ -177,7 +180,7 @@ const CreateItem = () => {
               BACK
             </Button>
             <Button className="create"
-              disabled={!itemname || !topicIntroduction }
+              disabled={!itemname || !itemIntroduction }
               width="100%"
               onClick={() => doCreate()}
             >

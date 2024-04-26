@@ -39,11 +39,11 @@ const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
-  const [registerCode, setRegisterCode] = useState<string>(null);
+  const [token, setToken] = useState<string>(null);
 
   const doRegister = async () => {
     try {
-      const requestBody = JSON.stringify({ username, password, registerCode });
+      const requestBody = JSON.stringify({ username:username, password:password, token:token });
       await api.post("/users/registration", requestBody);
 
       alert("Register Done!");
@@ -76,8 +76,8 @@ const Register = () => {
           />
           <FormField
             label="Register Code (optional)"
-            value={registerCode}
-            onChange={(n) => setRegisterCode(n)}
+            value={token}
+            onChange={(n) => setToken(n)}
           />
           <div className="register button-container">
             <Button className="register"

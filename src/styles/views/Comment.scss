@@ -81,6 +81,7 @@
     border: none;
     border-radius: 0.75em;
     color: black;
+    resize: none;
   }
   &.commentcontainer {
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
@@ -113,6 +114,7 @@
     border: none;
     border-radius: 0.75em;
     color: $textColor;
+    resize: none;
   }
   &.displaycontainer {
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
@@ -143,6 +145,7 @@
     border: none;
     border-radius: 0.75em;
     color: black;
+    resize: none;
   }
   &.output {
     text-align: left;
