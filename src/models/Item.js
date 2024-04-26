@@ -3,7 +3,7 @@
  */
 class Item {
   constructor(data = {}) {
-    this.itemOwnerId = null;
+    this.itemTopicId = null;
     this.itemname = null;
     this.itemId = null;
     this.itemIntroduction = null;

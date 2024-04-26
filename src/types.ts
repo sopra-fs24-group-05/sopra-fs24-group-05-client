@@ -12,7 +12,7 @@ export type Item = {
   itemname: string;
   itemIntroduction: string;
   itemId: number;
-  itemOwnerId: number;
+  itemTopicId: number;
 
 };
 export type Comment = {

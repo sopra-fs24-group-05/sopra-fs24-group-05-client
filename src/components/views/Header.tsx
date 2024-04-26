@@ -21,8 +21,8 @@ const Header = props => {
     <div className="header container" style={{height: props.height}}>
       <h1 className="header title rankeverything" onClick={() => {localStorage.removeItem("currentTopic");navigate("lobby");}}>Rank Everything!</h1>
       <SearchLogo width="100px" height="100px"/>
-      {/* <UserLogo width="100px" height="100px" onClick={() => navigate(`/users/${localStorage.getItem("currentId")}`)}/> */}
-      <UserLogo width="100px" height="100px" onClick={() => navigate("/profile")}/>
+      <UserLogo width="100px" height="100px" onClick={() => navigate(`/profile/${localStorage.getItem("currentUserId")}`)}/>
+      {/* <UserLogo width="100px" height="100px" onClick={() => navigate("/profile")}/> */}
     </div>
   );
 };

@@ -75,11 +75,11 @@ const Lobby = () => {
       <div className="lobby container">
         <div className="lobby box">
           <div className="lobby mensa-image"></div>
-          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "MENSA");navigate("/topic");}}>MENSA</div>
+          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "MENSA");localStorage.setItem("currentTopicId", "1");navigate(`/topic/${localStorage.getItem("currentTopicId")}`);}}>MENSA</div>
         </div>
         <div className="lobby box">
           <div className="lobby course-image"></div>
-          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "COURSE");navigate("/topic");}}>COURSE</div>
+          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "COURSE");localStorage.setItem("currentTopicId", "2");navigate(`/topic/${localStorage.getItem("currentTopicId")}`);}}>COURSE</div>
         </div>
       </div>
       <div className="lobby create-box">

@@ -28,8 +28,9 @@
   }
   &.follows-container {
     display: flex;
-    // height: 100px;
+    max-height: 70px;
     &.list {
+      height: 50px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;

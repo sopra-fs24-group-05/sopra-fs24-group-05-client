@@ -3,7 +3,7 @@
  */
 class Comment {
   constructor(data = {}) {
-    this.comment = null;
+    this.content = null;
     this.commentitemId=null;
     this.commentOwnerId = null;
     this.commentId = null;
