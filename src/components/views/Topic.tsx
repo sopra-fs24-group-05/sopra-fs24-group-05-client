@@ -54,7 +54,7 @@ const Topic = () => {
       try {
         const topicId = localStorage.getItem("currentTopicId");
         //This page will be reached only by clicking the item you want to comment
-        const responseitems = await api.get(`/items/${topicId}`);
+        const responseitems = await api.get(`/items/getByItemTopicId/${topicId}`);
         await new Promise((resolve) => setTimeout(resolve, 500));
         // Get the returned item 
         setItems(responseitems.data);
