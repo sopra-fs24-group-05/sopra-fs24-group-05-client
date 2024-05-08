@@ -8,8 +8,10 @@
     margin-top: 20px;
   }
   &.chatspacecontainer {
-    position:relative;
-    left:62.5%;
+    position:absolute;
+    left:65%;
+    top:25%;
+    width:700px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
@@ -19,7 +21,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 40%;
+    width: 65%;
     max-width: 80em;
     font-size: 16px;
     font-weight: 300;
@@ -104,6 +106,17 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
+  &.commentList {
+    text-align: left;
+    vertical-align:top;
+    height: 30px;
+    padding-left: 15px;
+    padding-right:15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    color: $textColor;
+  }
   &.input {
     text-align: left;
     vertical-align:top;
@@ -158,6 +171,16 @@
     border-radius: 0.75em;
     color: $textColor;
   }
+  &.commentcontent {
+    height: 100px;
+    padding-left: 15px;
+    padding-right:15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    color: black;
+    resize: none;
+  }
   &.field {
     display: flex;
     flex-direction: column;
@@ -178,5 +201,38 @@
     display: flex;
     justify-content: center;
     margin-top:15px;
+  }
+  &.star-rating {
+    display: flex; 
+    align-items: center; 
+  }
+  
+  &.star {
+    display: inline-block;
+    color: gray;
+    cursor: pointer;
+    margin-right: 5px; 
+  }
+  
+  &.star.selected {
+    color: rgb(255, 0, 0);
+  }
+  &.singlecommentcontainer{
+    display:flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  &.commentownerInformationcontainer{
+    display:flex;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+  &.commentowneravator{
+    position: relative;
+    top: 10px;
+    left: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    cursor: pointer;
   }
 }

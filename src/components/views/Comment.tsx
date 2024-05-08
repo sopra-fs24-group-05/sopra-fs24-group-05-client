@@ -84,10 +84,35 @@ FormFieldDisplay.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
 };
-
+function Star({ selected = false, onClick = f => f }) {
+  return (
+    <div className={selected ? "comment star selected" : "comment star"} onClick={onClick}>
+      ★
+    </div>
+  )
+};
+Star.propTypes = {
+  selected: PropTypes.bool,
+  onClick: PropTypes.func
+};
+const CommentContentForm =(props)=> {
+  return (
+    <div className="comment commentcontent">
+      {/* <label className="comment label">{props.label}</label>
+      <textarea readOnly={true}
+        className="comment display"
+        rows="3"
+        cols="50"
+        value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
+      /> */}
+    </div>
+  );
+};
 
 const Comment = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState<string>(null);
   const [content, setContent] = useState<string>(null);
   const [item, setItem] = useState<string>(null);
   const [topic, setTopic] = useState<string>(null);
@@ -95,11 +120,13 @@ const Comment = () => {
   const [topicname, setTopicname] = useState<string>(localStorage.getItem("currentTopic"));
   const [itemIntroduction, setItemIntroduction] = useState<string>(null);
   const [commentList, setCommentList] = useState<Comment[]>(null);
-  const [commentRate, setcommentRate] =useState<string>(null);
+  const [commentRate, setCommentRate] =useState(0);
   const [commentStatus, setCommentStatus] =useState<boolean>(0);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const totalStars = 5
+
 
   useEffect(() => {
     async function fetchData() {
@@ -150,6 +177,7 @@ const Comment = () => {
     }
   };
 
+
   const doSubmit = async () => {
     try {
       const commentItemId=localStorage.getItem("currentItemId");
@@ -192,7 +220,7 @@ const Comment = () => {
         />
       </div>
       <ChatButton 
-        width="25%"
+        width="20%"
         onClick={ChatSpace}
       >
         ChatSpace
@@ -215,12 +243,14 @@ const Comment = () => {
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type your message..."
             />
-            <Button 
-              width="75%"
-              onClick={handleSendMessage}
-            >
+            <div className="comment button-containerin">
+              <Button 
+                width="75%"
+                onClick={handleSendMessage}
+              >
               Send
-            </Button>
+              </Button>
+            </div>
           </div>
         </div>  
       )}
@@ -231,7 +261,7 @@ const Comment = () => {
             value={itemIntroduction}
           />
           <div className="comment button-containerin">
-            <Button className="submit"
+            <Button className="follow"
               width="25%"
               onClick={() => doFollow(localStorage.getItem("currentUserId"), localStorage.getItem("currentItemId"))}
             >
@@ -247,9 +277,19 @@ const Comment = () => {
             value={content}
             onChange={(un: string) => setContent(un)}
           />
+          <div className="comment star-rating">
+            {[...Array(totalStars)].map((_, index) => (
+              <Star
+                key={index}
+                selected={index < commentRate}
+                onClick={() => setCommentRate(index + 1)}
+              />
+            ))}
+            <p>CurrentRate：{commentRate} points</p>
+          </div>
           <div className="comment button-containerin">
             <Button className="submit"
-              disabled={!content}
+              disabled={!content||!commentRate}
               width="25%"
               onClick={() => doSubmit()}
             >
@@ -267,6 +307,22 @@ const Comment = () => {
                 key={index}
                 onClick={() => doCheckProfile(comment.commentOwnerId)}
               >
+                <div className = "comment singlecommentcontainer" >
+                  <div className="comment commentownerInformationcontainer">
+                    <div className="comment commentowneravator">
+                      {}
+                    </div>
+                    <div className="comment commentownerUsername">
+                    : {username}
+                    </div>
+                  </div>
+                  <div className="comment commentcontent">
+                    {content}
+                  </div>
+                  <div className="comment commentReplyandThumbups">
+
+                  </div>
+                </div>
                 {comment.commentOwnerName}: {comment.content}
               </li>
             )) : <div>Loading...</div>}
