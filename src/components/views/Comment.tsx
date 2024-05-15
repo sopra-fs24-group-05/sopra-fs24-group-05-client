@@ -124,7 +124,7 @@ const Comment = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
-  const [thumbupsNumber,setThumbupsNumber]=useState<Int16Array>(0);
+  const [thumbupsNumber,setThumbupsNumber]=useState(0);
   const totalStars = 5
 
 
@@ -176,7 +176,7 @@ const Comment = () => {
       setMessage("");
     }
   };
-  const handleThumbups = () => {
+  const handleThumbups = (commentId) => {
     setThumbupsNumber(thumbupsNumber + 1);
   };
 
@@ -288,7 +288,7 @@ const Comment = () => {
                 onClick={() => setCommentRate(index + 1)}
               />
             ))}
-            <p>CurrentRate：{commentRate} points</p>
+            <p>CurrentRate:{commentRate} points</p>
           </div>
           <div className="comment button-containerin">
             <Button className="submit"
@@ -308,38 +308,70 @@ const Comment = () => {
             {commentList ? commentList.map((comment, index) => (
               <li 
                 key={index}
-                onClick={() => doCheckProfile(comment.commentOwnerId)}
+                
               >
                 <div className = "comment singlecommentcontainer" >
                   <div className="comment commentownerInformationcontainer">
-                    <div className="comment commentowneravator">
+                    <div className="comment commentowneravator" onClick={() => doCheckProfile(comment.commentOwnerId)}>
                       {}
                     </div>
                     <div className="comment commentownerUsername">
-                    : {username}
+                    : {comment.commentOwnerName}
                     </div>
                   </div>
                   <div className="comment commentcontent">
-                    <textarea
+                    {/* <textarea
                       readOnly={true}
                       className="comment introduction"
                       rows="4"
                       cols="50"
                       value={content}
-                    />
+                    /> */}
+                    {comment.content}
                   </div>
                   <div className="comment replyandthumbupscontainer">
-                    <div className="thumbups">
-                      <Button 
-                        onClick={handleThumbups}>THUMBUPS</Button>
-                      <span>{thumbupsNumber}</span>
+                    <div className="comment thumbups">
+                      {/* <Button 
+                        onClick={() => handleThumbups(comment.commentId)}>THUMBUPS</Button> */}
+                      <div className="comment thumbupsButton" onClick={() => handleThumbups(comment.commentId)}>
+                        <svg 
+                          className="comment thumbupsIcon" 
+                          viewBox="0 0 1024 1024" 
+                          version="1.1" 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          width="20" 
+                          height="20">
+                            <path 
+                              d="M594.176 151.168a34.048 34.048 0 0 0-29.184 10.816c-11.264 13.184-15.872 24.064-21.504 40.064l-1.92 5.632c-5.632 16.128-12.8 36.864-27.648 63.232-25.408 44.928-50.304 74.432-86.208 97.024-23.04 14.528-43.648 26.368-65.024 32.576v419.648a4569.408 4569.408 0 0 0 339.072-4.672c38.72-2.048 72-21.12 88.96-52.032 21.504-39.36 47.168-95.744 63.552-163.008a782.72 782.72 0 0 0 22.528-163.008c0.448-16.832-13.44-32.256-35.328-32.256h-197.312a32 32 0 0 1-28.608-46.336l0.192-0.32 0.64-1.344 2.56-5.504c2.112-4.8 5.12-11.776 8.32-20.16 6.592-17.088 13.568-39.04 16.768-60.416 4.992-33.344 3.776-60.16-9.344-84.992-14.08-26.688-30.016-33.728-40.512-34.944zM691.84 341.12h149.568c52.736 0 100.864 40.192 99.328 98.048a845.888 845.888 0 0 1-24.32 176.384 742.336 742.336 0 0 1-69.632 178.56c-29.184 53.44-84.48 82.304-141.76 85.248-55.68 2.88-138.304 5.952-235.712 5.952-96 0-183.552-3.008-244.672-5.76-66.432-3.136-123.392-51.392-131.008-119.872a1380.672 1380.672 0 0 1-0.768-296.704c7.68-72.768 70.4-121.792 140.032-121.792h97.728c13.76 0 28.16-5.504 62.976-27.456 24.064-15.104 42.432-35.2 64.512-74.24 11.904-21.184 17.408-36.928 22.912-52.8l2.048-5.888c6.656-18.88 14.4-38.4 33.28-60.416a97.984 97.984 0 0 1 85.12-32.768c35.264 4.096 67.776 26.88 89.792 68.608 22.208 42.176 21.888 84.864 16 124.352a342.464 342.464 0 0 1-15.424 60.544z m-393.216 477.248V405.184H232.96c-40.448 0-72.448 27.712-76.352 64.512a1318.912 1318.912 0 0 0 0.64 282.88c3.904 34.752 32.96 61.248 70.4 62.976 20.8 0.96 44.8 1.92 71.04 2.816z" 
+                              fill="#9499a0">
+                            </path>
+                          </svg>
+                        <div className="comment thumbupsNumber">{thumbupsNumber}</div>
+                      </div>
                     </div>
-                    <div className="reply">
-
+                    <div className="comment reply">
+                      {/* <Button 
+                        onClick={() => handleThumbups(comment.commentId)}>THUMBUPS</Button> */}
+                      <div className="comment replyButton" onClick={() => handleThumbups(comment.commentId)}>
+                        <svg 
+                          width="10" 
+                          height="10" 
+                          viewBox="0 0 17 17" 
+                          fill="none" 
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path 
+                            fillRule="evenodd" 
+                            clipRule="evenodd" 
+                            d="M16.3451 15.2003C16.6377 15.4915 16.4752 15.772 16.1934 16.0632C16.15 16.1279 16.0958 16.1818 16.0525 16.2249C15.7707 16.473 15.4456 16.624 15.1854 16.3652L11.6848 12.8815C10.4709 13.8198 8.97529 14.3267 7.44714 14.3267C3.62134 14.3267 0.5 11.2314 0.5 7.41337C0.5 3.60616 3.6105 0.5 7.44714 0.5C11.2729 0.5 14.3943 3.59538 14.3943 7.41337C14.3943 8.98802 13.8524 10.5087 12.8661 11.7383L16.3451 15.2003ZM2.13647 7.4026C2.13647 10.3146 4.52083 12.6766 7.43624 12.6766C10.3517 12.6766 12.736 10.3146 12.736 7.4026C12.736 4.49058 10.3517 2.1286 7.43624 2.1286C4.50999 2.1286 2.13647 4.50136 2.13647 7.4026Z" fill="currentColor"
+                          ></path>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
-                {comment.commentOwnerName}: {comment.content}
+                <div className="comment bottom-line"></div>
+                {/* {comment.commentOwnerName}: {comment.content} */}
               </li>
             )) 
               : <div>Loading...</div>}

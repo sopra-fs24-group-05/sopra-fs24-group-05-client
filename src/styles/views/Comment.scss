@@ -109,7 +109,7 @@
   &.commentList {
     text-align: left;
     vertical-align:top;
-    height: 30px;
+    height: fit-content;
     padding-left: 15px;
     padding-right:15px;
     margin-left: -4px;
@@ -172,7 +172,8 @@
     color: $textColor;
   }
   &.commentcontent {
-    height: 100px;
+    // height: 30px;
+    display: flex;
     padding-left: 15px;
     padding-right:15px;
     margin-left: -4px;
@@ -220,12 +221,12 @@
   &.singlecommentcontainer{
     display:flex;
     flex-direction: column;
-    margin-top: 20px;
+    // margin-top: 20px;
   }
   &.commentownerInformationcontainer{
     display:flex;
     flex-direction: row;
-    margin-top: 20px;
+    // margin-top: 20px;
   }
   &.commentowneravator{
     position: relative;
@@ -239,11 +240,38 @@
     position:relative;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
-    margin-top: 20px;
+    // margin-top: 20px;
   }
   &.replyandthumbupscontainer{
     display:flex;
     flex-direction: row;
-    margin-top: 20px;
+    // margin-top: 20px;
+  }
+  &.thumbups {
+    flex-direction: row;
+  }
+  &.thumbupsButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    cursor: pointer;
+  }
+  &.thumbupsNumber {
+    margin-left: 5px;
+  }
+
+  &.bottom-line {
+    // margin-left: 80px;
+    border-bottom: 1px solid black;
+    margin-top: 14px;
+  }
+  &.reply {
+    flex-direction: row;
+  }
+  &.replyButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    cursor: pointer;
   }
 }

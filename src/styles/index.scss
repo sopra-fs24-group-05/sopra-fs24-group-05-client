@@ -45,10 +45,12 @@ li {
   padding: 5px;
   background-color: white; 
   cursor: pointer;
+  list-style: none;
 }
-li:hover {
-  background-color: lightblue;
-}
+
+// li:hover {
+//   background-color: lightblue;
+// }
 
 * {
   -webkit-font-smoothing: antialiased;
