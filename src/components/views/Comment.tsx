@@ -50,7 +50,6 @@ const FormFieldComment = (props) => {
       <label className="comment label">{props.label}</label>
       <textarea
         className="comment input"
-        // bug：这里不能把input改成其他名字，否则UI会变得很怪！
         placeholder="enter here.."
         rows="4"
         cols="50"
@@ -125,6 +124,7 @@ const Comment = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [thumbupsNumber,setThumbupsNumber]=useState<Int16Array>(0);
   const totalStars = 5
 
 
@@ -176,6 +176,9 @@ const Comment = () => {
       setMessage("");
     }
   };
+  const handleThumbups = () => {
+    setThumbupsNumber(thumbupsNumber + 1);
+  };
 
 
   const doSubmit = async () => {
@@ -185,7 +188,7 @@ const Comment = () => {
       const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
       const commentOwnerName = commentOwner.username;
       setCommentStatus(1);
-      const requestBody = JSON.stringify({ commentOwnerName, commentItemId, commentOwnerId, content});
+      const requestBody = JSON.stringify({ commentOwnerName, commentItemId, commentOwnerId, content,commentRate});
       await api.post("/comments/create", requestBody);
       alert("Successfully create!");
       location.reload();
@@ -317,15 +320,29 @@ const Comment = () => {
                     </div>
                   </div>
                   <div className="comment commentcontent">
-                    {content}
+                    <textarea
+                      readOnly={true}
+                      className="comment introduction"
+                      rows="4"
+                      cols="50"
+                      value={content}
+                    />
                   </div>
-                  <div className="comment commentReplyandThumbups">
+                  <div className="comment replyandthumbupscontainer">
+                    <div className="thumbups">
+                      <Button 
+                        onClick={handleThumbups}>THUMBUPS</Button>
+                      <span>{thumbupsNumber}</span>
+                    </div>
+                    <div className="reply">
 
+                    </div>
                   </div>
                 </div>
                 {comment.commentOwnerName}: {comment.content}
               </li>
-            )) : <div>Loading...</div>}
+            )) 
+              : <div>Loading...</div>}
           </ul>
         </div>
       </div> 

@@ -235,4 +235,15 @@
     margin-right: 10px;
     cursor: pointer;
   }
+  &.commentcontainer{
+    position:relative;
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    margin-top: 20px;
+  }
+  &.replyandthumbupscontainer{
+    display:flex;
+    flex-direction: row;
+    margin-top: 20px;
+  }
 }
