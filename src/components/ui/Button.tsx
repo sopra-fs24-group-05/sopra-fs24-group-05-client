@@ -18,3 +18,21 @@ Button.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
 };
+
+
+export const ReplyButton = props => (
+  <button
+    {...props}
+    style={{width: props.width, ...props.style}}
+    className={`reply-button ${props.className}`}>
+    {props.children}
+  </button>
+);
+
+
+ReplyButton.propTypes = {
+  width: PropTypes.number,
+  style: PropTypes.string,
+  className: PropTypes.string,
+  children: PropTypes.node,
+};

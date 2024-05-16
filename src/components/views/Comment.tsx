@@ -3,7 +3,7 @@ import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import User from "models/User";
 import {useNavigate} from "react-router-dom";
-import { Button } from "components/ui/Button";
+import { ReplyButton, Button } from "components/ui/Button";
 import { ChatButton } from "components/ui/ChatButton";
 import "styles/views/Comment.scss";
 import BaseContainer from "components/ui/BaseContainer";
@@ -123,11 +123,13 @@ const Comment = () => {
   const [commentRate, setCommentRate] =useState(0);
   const [commentStatus, setCommentStatus] =useState<boolean>(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [replyspace, setReplySpace] = useState(false);
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [thumbupsNumber,setThumbupsNumber]=useState(0);
   const [thumbupList, setThumbupList] = useState<Int16Array[]>(null);
   const totalStars = 5;
+  const [replyContent,setReplyContent] = useState<string>(null);
 
 
   useEffect(() => {
@@ -150,7 +152,8 @@ const Comment = () => {
         // console.log("status code:", response.status);
         // console.log("status text:", response.statusText);
         // console.log("requested data:", response.data);
-
+        const User = JSON.parse(localStorage.getItem("currentUser"));
+        setUsername(User.username)
         // // See here to get more data.
         // console.log(response);
       } catch (error) {
@@ -184,7 +187,13 @@ const Comment = () => {
     
     window.location.reload();
   };
-
+  const reply = () => {
+    setReplySpace(!replyspace);
+  }
+  const sendReply = (commentId) => {
+    api.post("", localStorage.getItem("currentUserId"));
+    window.location.reload();
+  }
   const doSubmit = async () => {
     try {
       const commentItemId=localStorage.getItem("currentItemId");
@@ -314,8 +323,7 @@ const Comment = () => {
           <ul className="comment commentList">
             {commentList ? commentList.map((comment, index) => (
               <li 
-                key={index}
-                
+                key={index} 
               >
                 <div className = "comment singlecommentcontainer" >
                   <div className="comment commentownerInformationcontainer">
@@ -353,13 +361,13 @@ const Comment = () => {
                             fill="#9499a0">
                           </path>
                         </svg> : <svg className="thumbupsLikedIcon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M860.032 341.12h-182.08c7.488-17.408 14.72-38.528 18.048-60.544 5.952-39.872 4.992-87.36-18.368-129.088-21.76-38.848-50.304-60.928-83.52-61.376-30.72-0.384-53.888 18.176-65.728 33.408a199.296 199.296 0 0 0-32.064 59.264l-1.92 5.184c-5.44 14.976-10.88 29.952-23.04 51.456-19.712 34.816-48.832 56.128-77.696 74.368a391.936 391.936 0 0 1-30.976 17.92v552.448a4621.952 4621.952 0 0 0 351.872-5.312c51.264-2.752 100.672-28.544 127.488-76.032 24.32-43.136 55.168-108.16 74.368-187.264 20.416-84.16 24.64-152.704 24.576-195.968-0.128-46.336-38.72-78.4-80.96-78.4z m-561.344 541.312V341.12H215.808c-59.712 0-113.408 42.048-120.896 104.32a1376 1376 0 0 0 0.64 330.368c7.36 58.688 56.128 100.032 113.024 102.848 25.024 1.28 55.552 2.56 90.112 3.712z" fill="#00aeec"></path></svg>}
-                        <div className="comment thumbupsNumber">{comment.thumbsUpNum}</div>
                       </div>
+                      <div className="comment thumbupsNumber">{comment.thumbsUpNum}</div>
                     </div>
                     <div className="comment reply">
                       {/* <Button 
                         onClick={() => handleThumbups(comment.commentId)}>THUMBUPS</Button> */}
-                      <div className="comment replyButton" onClick={() => handleThumbups(comment.commentId)}>
+                      <div className="comment replyButton" onClick={() => reply()}>
                         <svg 
                           width="10" 
                           height="10" 
@@ -377,6 +385,27 @@ const Comment = () => {
                     </div>
                   </div>
                 </div>
+                {replyspace && (
+                  <div className="comment replycontainer">
+                    <div className="comment replyform">
+                      <div>Reply@{comment.commentOwnerName}:</div>
+                      <textarea
+                        className="comment replyinput"
+                        type="text"
+                        cols="50"
+                        value={replyContent}
+                        onChange={(e) => setReplyContent(e.target.value)}
+                        placeholder="Type your reply..."
+                      />
+                    </div>
+                    <dis className = "button-containerin">
+                      <ReplyButton onClick={() => sendReply()}
+                        disabled ={!replyContent}>
+                        REPLY
+                      </ReplyButton>
+                    </dis>                     
+                  </div>                      
+                )}
                 <div className="comment bottom-line"></div>
                 {/* {comment.commentOwnerName}: {comment.content} */}
               </li>
