@@ -228,6 +228,10 @@ const Comment = () => {
     alert("Successfully follow!");
   }
 
+  const doTranslate = () => {
+    const responeTranslate = api.get("/translate", )
+  }
+
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -397,15 +401,18 @@ const Comment = () => {
                         onChange={(e) => setReplyContent(e.target.value)}
                         placeholder="Type your reply..."
                       />
+                      <div className = "button-containerin">
+                        <ReplyButton onClick={() => sendReply()}
+                          disabled ={!replyContent}>
+                          REPLY
+                        </ReplyButton>
+                      </div>                     
                     </div>
-                    <dis className = "button-containerin">
-                      <ReplyButton onClick={() => sendReply()}
-                        disabled ={!replyContent}>
-                        REPLY
-                      </ReplyButton>
-                    </dis>                     
                   </div>                      
                 )}
+                <div className="comment translate">
+                  <div className="comment translateButton" onClick={doTranslate(comment.content)}>Translate to {navigator.language}</div>
+                </div>
                 <div className="comment bottom-line"></div>
                 {/* {comment.commentOwnerName}: {comment.content} */}
               </li>
