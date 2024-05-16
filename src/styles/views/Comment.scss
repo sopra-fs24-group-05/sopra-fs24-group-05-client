@@ -117,6 +117,7 @@
     border: none;
     border-radius: 0.75em;
     color: $textColor;
+    cursor: default;
   }
   &.input {
     text-align: left;
@@ -331,6 +332,7 @@
     border: none;
     border-radius: 0.75em;
     color: $textColor;
+    cursor: default;
   }
   &.singleSonCommentContainer{
     display:flex;

@@ -123,6 +123,10 @@
     margin-left: -4px;
     border: none;
     border-radius: 0.75em;
-    color: black;
+    color: black;  
+  }
+  li:hover {
+    background-color: lightblue;
+    cursor: pointer;
   }
 }
