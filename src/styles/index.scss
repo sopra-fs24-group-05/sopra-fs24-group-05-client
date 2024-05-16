@@ -36,6 +36,7 @@ ul {
   overflow-y: auto;
 }
 
+
 li {
   height: fit-content;
   display: flex;
@@ -44,13 +45,9 @@ li {
   margin: 0; 
   padding: 5px;
   background-color: white; 
-  // cursor: pointer;
   list-style: none;
 }
 
-// li:hover {
-//   background-color: lightblue;
-// }
 
 * {
   -webkit-font-smoothing: antialiased;
