@@ -109,7 +109,8 @@
   &.commentList {
     text-align: left;
     vertical-align:top;
-    height: fit-content;
+    // height: fit-content;
+    height: 300px;
     padding-left: 15px;
     padding-right:15px;
     margin-left: -4px;
@@ -273,5 +274,9 @@
     justify-content: center;
     margin-top: 1em;
     cursor: pointer;
+  }
+  &.averageRateContainer {
+    @include center;
+    margin-top: 20px;
   }
 }

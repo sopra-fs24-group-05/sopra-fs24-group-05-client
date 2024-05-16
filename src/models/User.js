@@ -9,7 +9,7 @@ class User {
     this.token = null;
     this.status = null;
     this.identity = null;
-    this.avator=null;
+    this.avatar = null;
     Object.assign(this, data);
   }
 }

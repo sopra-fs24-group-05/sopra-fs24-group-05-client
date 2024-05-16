@@ -7,6 +7,7 @@ class Item {
     this.itemname = null;
     this.itemId = null;
     this.itemIntroduction = null;
+    this.itemAverageScore = null;
     Object.assign(this, data);
   }
 }
