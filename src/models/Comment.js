@@ -8,8 +8,8 @@ class Comment {
     this.commentOwnerId = null;
     this.commentId = null;
     this.commentRate = null;
-    this.commentThumbupss = null;
-    // this.commentStatus = null;
+    this.commentThumbsUpNum = null;
+    this.commentThumbsUpStatus = null;
     Object.assign(this, data);
   }
 }
