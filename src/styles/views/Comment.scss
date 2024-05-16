@@ -291,6 +291,7 @@
     // margin-top: 10px;
     // margin-left:20px;
     font-size:medium;
+    margin-bottom:10px;
   }
   &.replyform{
     position:relative;
@@ -317,5 +318,46 @@
   }
   &.translateButton {
     cursor: pointer;
+  }
+  &.commentReplyList{
+    text-align: left;
+    vertical-align:top;
+    height: fit-content;
+    // height:200px;
+    // min-height: 50px;
+    padding-left: 15px;
+    padding-right:15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    color: $textColor;
+  }
+  &.singleSonCommentContainer{
+    display:flex;
+    flex-direction: row;
+    // margin-top: 20px;
+  }
+  &.sonCommentOwnerInformationContainer{
+    display:flex;
+    flex-direction: row;
+    // margin-top: 20px;
+  }
+  &.sonCommentOwnerAvator{
+    position: relative;
+    top: 10px;
+    left: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  &.sonCommentcontent{
+    position:relative;
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    // margin-top: 20px;
+  }
+  &.unfoldAllReply:hover{
+    color: rgb(99, 190, 240);
+    cursor:pointer;
   }
 }

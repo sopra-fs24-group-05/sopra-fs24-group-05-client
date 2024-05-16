@@ -130,8 +130,8 @@ const Comment = () => {
   const [thumbupList, setThumbupList] = useState<Int16Array[]>(null);
   const totalStars = 5;
   const [replyContent,setReplyContent] = useState<string>(null);
-
-
+  const [unfoldAllReply, setUnfoldAllReply] = useState(false);
+ 
   useEffect(() => {
     async function fetchData() {
       try {
@@ -187,12 +187,16 @@ const Comment = () => {
     
     window.location.reload();
   };
-  const reply = () => {
+  const reply = (commentId) => {
     setReplySpace(!replyspace);
   }
   const sendReply = (commentId) => {
     api.post("", localStorage.getItem("currentUserId"));
     window.location.reload();
+  }
+  const showAllReply = (commentId) =>{
+    alert(commentId);
+    setUnfoldAllReply(!unfoldAllReply);
   }
   const doSubmit = async () => {
     try {
@@ -371,7 +375,7 @@ const Comment = () => {
                     <div className="comment reply">
                       {/* <Button 
                         onClick={() => handleThumbups(comment.commentId)}>THUMBUPS</Button> */}
-                      <div className="comment replyButton" onClick={() => reply()}>
+                      <div className="comment replyButton" onClick={() => reply(comment.commentId)}>
                         <svg 
                           width="10" 
                           height="10" 
@@ -389,6 +393,35 @@ const Comment = () => {
                     </div>
                   </div>
                 </div>
+                <div className = "comment unfoldAllReply"onClick={() => showAllReply(comment.commentId)}> Show All Reply </div>
+                {unfoldAllReply && (
+                  <ul className="comment commentReplyList">
+                    <li 
+                      key={index} 
+                    >
+                      <div className = "comment singleSonCommentContainer" >
+                        <div className = "comment sonCommentOwnerInformationContainer">
+                          <div className="comment sonCommentOwnerAvator" onClick={() => doCheckProfile(comment.commentOwnerId)}>
+                            {}
+                          </div>
+                          <div className="comment sonCommentOwnerUsername">
+                          : {comment.commentOwnerName}
+                          </div>
+                        </div>
+                        <div className="comment sonCommentcontent">
+                          {/* <textarea
+                              readOnly={true}
+                              className="comment introduction"
+                              rows="4"
+                              cols="50"
+                              value={content}
+                          /> */}
+                          {comment.content}
+                        </div>
+                      </div> 
+                    </li>
+                  </ul>
+                )}
                 {replyspace && (
                   <div className="comment replycontainer">
                     <div className="comment replyform">
@@ -402,7 +435,7 @@ const Comment = () => {
                         placeholder="Type your reply..."
                       />
                       <div className = "button-containerin">
-                        <ReplyButton onClick={() => sendReply()}
+                        <ReplyButton onClick={() => sendReply(comment.commentId)}
                           disabled ={!replyContent}>
                           REPLY
                         </ReplyButton>
