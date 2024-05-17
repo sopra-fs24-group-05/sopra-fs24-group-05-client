@@ -258,6 +258,9 @@
     justify-content: center;
     margin-top: 1em;
     cursor: pointer;
+    &:hover {
+      transform: translateY(-2px);
+    }
   }
   &.thumbupsNumber {
     margin-left: 5px;
@@ -277,7 +280,10 @@
     display: flex;
     justify-content: center;
     margin-top: 1em;
-    cursor: pointer;
+  }
+  &.replyButton:hover{
+    color: rgb(99, 190, 240);
+    cursor:pointer;
   }
   &.averageRateContainer {
     @include center;
