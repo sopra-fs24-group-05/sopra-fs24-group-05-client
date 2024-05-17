@@ -95,13 +95,13 @@ const CreateItem = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const topicId = localStorage.getItem("currentTopicId");
+        const topicName = localStorage.getItem("currentTopic");
         //This page will be reached only by clicking the item you want to comment
-        const responseTopic = await api.get(`/topic/${topicId}`);
+        const responseTopic = await api.get(`/topics/topicName/${topicName}`);
 
         // Get the returned item 
         setTopic(responseTopic.data);
-        settopicIntroduction(responseTopic.data.topicIntroduction);
+        settopicIntroduction(responseTopic.data.description);
         // // This is just some data for you to see what is available.
         // // Feel free to remove it.
         // console.log("request to:", response.request.responseURL);
@@ -129,9 +129,9 @@ const CreateItem = () => {
 
   const doCreate = async () => {
     try {
-      const itemTopicId = topic.topicId;
-      const requestBody = JSON.stringify({ itemTopicId, itemname, itemIntroduction });
-      await api.post("/items", requestBody);
+      const itemTopicId = localStorage.getItem("currentTopicId");
+      const requestBody = JSON.stringify({ topicId: itemTopicId, itemName: itemname, content: itemIntroduction });
+      await api.post(`/items/byTopicId/${itemTopicId}`, requestBody);
       alert("Successfully create!");
       localStorage.removeItem("currentTopic");
       localStorage.removeItem("currentTopicId");
@@ -144,7 +144,6 @@ const CreateItem = () => {
   };
 
   const doBack = () => {
-    alert("Are you sure that you want to go back without saving?");
     navigate("/topic/:topicId");
   } 
   

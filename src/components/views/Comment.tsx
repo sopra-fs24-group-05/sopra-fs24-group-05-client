@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import User from "models/User";
+import Item from "models/Item";
 import {useNavigate} from "react-router-dom";
 import { ReplyButton, Button } from "components/ui/Button";
 import { ChatButton } from "components/ui/ChatButton";
@@ -113,9 +114,9 @@ const Comment = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>(null);
   const [content, setContent] = useState<string>(null);
-  const [item, setItem] = useState<string>(null);
+  const [item, setItem] = useState<Item>(null);
   const [topic, setTopic] = useState<string>(null);
-  const [itemname, setItemname] = useState<string>(localStorage.getItem("currentItem"));
+  const [itemname, setItemname] = useState<string>(null);
   const [topicname, setTopicname] = useState<string>(localStorage.getItem("currentTopic"));
   const [itemIntroduction, setItemIntroduction] = useState<string>(null);
   const [itemAverageScore, setItemAverageScore] = useState(0);
@@ -128,23 +129,26 @@ const Comment = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [thumbupsNumber,setThumbupsNumber]=useState(0);
   const [thumbupList, setThumbupList] = useState<Int16Array[]>(null);
+  const [isTranslated, setIstranslated] = useState<Boolean>(false);
   const totalStars = 5;
   const [replyContent,setReplyContent] = useState<string>(null);
   // const [unfoldAllReply, setUnfoldAllReply] = useState(false);
   const [unfoldedComments, setUnfoldedComments] = useState([]);
+  
   useEffect(() => {
     async function fetchData() {
       try {
         const itemId = localStorage.getItem("currentItemId");
-        //This page will be reached only by clicking the item you want to comment
+        // //This page will be reached only by clicking the item you want to comment
         const responseItem = await api.get(`/items/getByItemId/${itemId}`);
-
         // Get the returned item 
         setItem(responseItem.data);
-        setItemIntroduction(responseItem.data.itemIntroduction);
-        setItemAverageScore(responseItem.data.itemAverageScore);
+        console.log(item);
+        setItemname(responseItem.data.itemName);
+        setItemIntroduction(responseItem.data.content);
+        setItemAverageScore(responseItem.data.score);
 
-        const responseComments = await api.get(`/comments/itemId/${itemId}`, localStorage.getItem("currentUserId"));
+        const responseComments = await api.get(`/comments/itemId/${itemId}`);
         setCommentList(responseComments.data);
         // // This is just some data for you to see what is available.
         // // Feel free to remove it.
@@ -221,7 +225,7 @@ const Comment = () => {
       const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
       const commentOwnerName = commentOwner.username;
       setCommentStatus(1);
-      const requestBody = JSON.stringify({ commentOwnerName, commentItemId, commentOwnerId, content,commentRate});
+      const requestBody = JSON.stringify({ commentOwnerName: commentOwnerName, commentItemId: commentItemId, commentOwnerId: commentOwnerId, content: content, score: commentRate});
       await api.post("/comments/create", requestBody);
       alert("Successfully create!");
       location.reload();
@@ -248,10 +252,32 @@ const Comment = () => {
     alert("Successfully follow!");
   }
 
-  const doTranslate = () => {
-    const responeTranslate = api.get("/translate", )
+  const doTranslate = (commentId, content) => {
+    if (isTranslated) {
+      const commentIndex = commentList.find(comment => comment.commentId === commentId);
+      if (commentIndex !== -1) {
+        const updatedCommentList = [...commentList];
+        updatedCommentList[commentIndex].content = content;
+        setCommentList(updatedCommentList);
+        setIstranslated(false);
+      }
+    } else {
+      try {
+        const responseTranslate = api.get("/translate", {text: content, targetLanguage: navigator.language});
+        const translatedContent = responseTranslate.data;
+        const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
+        if (commentIndex !== -1) {
+          const updatedCommentList = [...commentList];
+          updatedCommentList[commentIndex].content = translatedContent;
+          setCommentList(updatedCommentList);
+          setIstranslated(true);
+        }
+      } catch (error) {
+        console.error("translation failed!", error);
+      }
+    }
   }
-
+  
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -459,9 +485,14 @@ const Comment = () => {
                     </div>
                   </div>                      
                 )}
-                <div className="comment translate">
-                  <div className="comment translateButton" onClick={doTranslate(comment.content)}>Translate to {navigator.language}</div>
-                </div>
+                {isTranslated ? (
+                  <div className="comment translate">
+                    <div className="comment translateButton" onClick={doTranslate(comment.commentId, comment.content)}>Restore</div>
+                  </div>) : (
+                  <div className="comment translate">
+                    <div className="comment translateButton" onClick={doTranslate(comment.commentId, comment.content)}>Translate</div>
+                  </div>)
+                }
                 <div className="comment bottom-line"></div>
                 {/* {comment.commentOwnerName}: {comment.content} */}
               </li>

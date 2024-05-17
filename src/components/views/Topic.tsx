@@ -52,13 +52,15 @@ const Topic = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const topicId = localStorage.getItem("currentTopicId");
+        const topicName = localStorage.getItem("currentTopic");
         //This page will be reached only by clicking the item you want to comment
-        const responseitems = await api.get(`/items/getByItemTopicId/${topicId}`);
+        const responseTopic = await api.get(`/topics/topicName/${topicName}`);
+        const responseitems = await api.get(`/items/byTopicName/${topicName}`);
         await new Promise((resolve) => setTimeout(resolve, 500));
         // Get the returned item 
+        localStorage.setItem("currentTopicId", responseTopic.data.id);
         setItems(responseitems.data);
-        console.log(responseitems);
+        console.log(responseitems.data);
       } catch (error) {
         console.error(
           `Something went wrong while fetching the items: \n${handleError(
@@ -86,9 +88,8 @@ const Topic = () => {
   } 
 
   const doComment = (item) => {
-    localStorage.setItem("currentItem", item.itemname);
-    localStorage.setItem("currentItemId", item.id);
-    navigate(`/comment/${item.id}`);
+    localStorage.setItem("currentItemId", item.itemId);
+    navigate(`/comment/${item.itemId}`);
   }
 
   return (
@@ -106,7 +107,7 @@ const Topic = () => {
                 key={index}
                 onClick={() => doComment(item)}
               >
-                {item.itemname}
+                {item.itemName}
               </li>
             )) : <div>Loading...</div>}
           </ul>
