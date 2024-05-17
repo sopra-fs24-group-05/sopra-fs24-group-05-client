@@ -127,8 +127,8 @@ const Comment = () => {
   const [replyspace, setReplySpace] = useState([]);
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
-  const [thumbupsNumber,setThumbupsNumber]=useState(0);
-  const [thumbupList, setThumbupList] = useState<Int16Array[]>(null);
+  const [thumbsUpNum,setThumbsUpNum]=useState(0);
+  const [isAlreadyLiked, setIsAlreadyLiked] = useState<boolean>(0);
   const totalStars = 5;
   const [replyContent,setReplyContent] = useState<string>(null);
   // const [unfoldAllReply, setUnfoldAllReply] = useState(false);
@@ -191,10 +191,20 @@ const Comment = () => {
       setMessage("");
     }
   };
-  const handleThumbups = (commentId) => {
-    const responseThumbsUpNum = api.post("", localStorage.getItem("currentUserId"));
-    
-    window.location.reload();
+  const handleThumbups = async (commentId) => {
+    const userId= localStorage.getItem("currentUserId");
+    const responseThumbsUp = await api.put(`/comments/LikeComment/${commentId}/${userId}`);
+    const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
+    if (commentIndex !== -1) {
+      const updatedCommentList = [...commentList];
+      updatedCommentList[commentIndex].commentThumbsUpNum = responseThumbsUp.data.thumbsUpNum;
+      setCommentList(updatedCommentList);
+    }
+    console.log(responseThumbsUp);
+    if(responseThumbsUp.data.isAlreadyLiked === true)
+      alert("You have already liked!");
+    else
+      window.location.reload();
   };
   const reply = (commentId) => {
     // setReplySpace(!replyspace);
