@@ -399,7 +399,7 @@ const Comment = () => {
                       {}
                     </div>
                     <div className="comment commentownerUsername">
-                    : {comment.commentOwnerName}
+                      {comment.commentOwnerName}:
                     </div>
                   </div>
                   <div className="comment commentcontent">
