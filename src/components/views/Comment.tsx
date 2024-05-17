@@ -129,7 +129,6 @@ const Comment = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [thumbupsNumber,setThumbupsNumber]=useState(0);
   const [thumbupList, setThumbupList] = useState<Int16Array[]>(null);
-  const [isTranslated, setIstranslated] = useState<Boolean>(false);
   const totalStars = 5;
   const [replyContent,setReplyContent] = useState<string>(null);
   // const [unfoldAllReply, setUnfoldAllReply] = useState(false);
@@ -150,6 +149,12 @@ const Comment = () => {
 
         const responseComments = await api.get(`/comments/itemId/${itemId}`);
         setCommentList(responseComments.data);
+        // if (commentList) {
+        // const updatedCommentList = commentList.map(comment => ({
+        //   ...comment,
+        //   isTranslated: false
+        // }));
+        // setCommentList(updatedCommentList);
         // // This is just some data for you to see what is available.
         // // Feel free to remove it.
         // console.log("request to:", response.request.responseURL);
@@ -252,31 +257,34 @@ const Comment = () => {
     alert("Successfully follow!");
   }
 
-  const doTranslate = (commentId, content) => {
-    if (isTranslated) {
-      const commentIndex = commentList.find(comment => comment.commentId === commentId);
-      if (commentIndex !== -1) {
-        const updatedCommentList = [...commentList];
-        updatedCommentList[commentIndex].content = content;
-        setCommentList(updatedCommentList);
-        setIstranslated(false);
-      }
-    } else {
-      try {
-        const responseTranslate = api.get("/translate", {text: content, targetLanguage: navigator.language});
+  const doTranslate = async (isTranslated, commentId, content) => {
+    try {
+      if (isTranslated) {
+        // 恢复原始内容
+        const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
+        if (commentIndex !== -1) {
+          const updatedCommentList = [...commentList];
+          updatedCommentList[commentIndex].content = updatedCommentList[commentIndex].originalContent;
+          updatedCommentList[commentIndex].isTranslated = false;
+          setCommentList(updatedCommentList);
+        }
+      } else {
+        // 进行翻译
+        const responseTranslate = await api.get("/translate", { params: { text: content, targetLanguage: navigator.language } });
         const translatedContent = responseTranslate.data;
         const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
         if (commentIndex !== -1) {
           const updatedCommentList = [...commentList];
           updatedCommentList[commentIndex].content = translatedContent;
+          updatedCommentList[commentIndex].originalContent = content;
+          updatedCommentList[commentIndex].isTranslated = true;
           setCommentList(updatedCommentList);
-          setIstranslated(true);
         }
-      } catch (error) {
-        console.error("translation failed!", error);
       }
+    } catch (error) {
+      console.error("Translation failed:", error);
     }
-  }
+  };
   
   return (
     <BaseContainer className="comment">
@@ -485,14 +493,9 @@ const Comment = () => {
                     </div>
                   </div>                      
                 )}
-                {isTranslated ? (
-                  <div className="comment translate">
-                    <div className="comment translateButton" onClick={doTranslate(comment.commentId, comment.content)}>Restore</div>
-                  </div>) : (
-                  <div className="comment translate">
-                    <div className="comment translateButton" onClick={doTranslate(comment.commentId, comment.content)}>Translate</div>
-                  </div>)
-                }
+                <div className="comment translate">
+                  <div className="comment translateButton" onClick={() => doTranslate(comment.isTranslated, comment.commentId, comment.content)}>{comment.isTranslated ? "Restore" : "Translate"}</div>
+                </div>
                 <div className="comment bottom-line"></div>
                 {/* {comment.commentOwnerName}: {comment.content} */}
               </li>

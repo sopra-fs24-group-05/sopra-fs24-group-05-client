@@ -4,6 +4,8 @@
 class Comment {
   constructor(data = {}) {
     this.content = null;
+    this.isTranslated = false;
+    this.translatedContent = null;
     this.commentitemId=null;
     this.commentOwnerId = null;
     this.commentId = null;
