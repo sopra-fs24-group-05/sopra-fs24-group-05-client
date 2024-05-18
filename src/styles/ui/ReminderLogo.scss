@@ -1,0 +1,10 @@
+@import "../theme";
+
+.reminder-logo {
+&:disabled{
+  opacity: 0;
+}
+  right:80px;
+  top:0px;
+  position:absolute;
+}
