@@ -131,6 +131,7 @@ const Comment = () => {
   const [isAlreadyLiked, setIsAlreadyLiked] = useState<boolean>(0);
   const totalStars = 5;
   const [replyContent,setReplyContent] = useState<string>(null);
+  const [replyCommentList,setReplyCommentList] = useState<Comment[]>(null);
   // const [unfoldAllReply, setUnfoldAllReply] = useState(false);
   const [unfoldedComments, setUnfoldedComments] = useState([]);
   
@@ -217,14 +218,23 @@ const Comment = () => {
     });
   }
   const sendReply = (commentId) => {
-    api.post("", localStorage.getItem("currentUserId"));
+    const fatherCommentId = commentId;
+    const commentOwnerId = localStorage.getItem("currentUserId");
+    const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
+    const commentOwnerName = commentOwner.username;
+    const requestBody = JSON.stringify({ fatherCommentId, content:replyContent,commentOwnerId:commentOwnerId, CommentOwnerName:commentOwnerName});
+    api.post("reply/create", requestBody);
     window.location.reload();
   }
   // const showAllReply = (commentId) =>{
   //   alert(commentId);
   //   setUnfoldAllReply(!unfoldAllReply);
   // }
-  const showAllReply = (commentId) => {
+  const showAllReply = async(commentId) => {
+    const fatherCommentId=commentId;
+    const responseReply=await api.get(`reply/get/${fatherCommentId}`);
+    setReplyCommentList(responseReply.data);
+    alert(responseReply);
     setUnfoldedComments((prevComments) => {
       if (prevComments.includes(commentId)) {
         return prevComments.filter((id) => id !== commentId);
@@ -458,30 +468,34 @@ const Comment = () => {
                 <div className = "comment unfoldAllReply"onClick={() => showAllReply(comment.commentId)}> Show All Reply </div>
                 {unfoldedComments.includes(comment.commentId) && (
                   <ul className="comment commentReplyList" >
-                    <li 
-                      key={index} 
-                    >
-                      <div className = "comment singleSonCommentContainer" >
-                        <div className = "comment sonCommentOwnerInformationContainer">
-                          <div className="comment sonCommentOwnerAvator" onClick={() => doCheckProfile(comment.commentOwnerId)}>
-                            {}
+                    {replyCommentList ? replyCommentList.map((comment, index) =>(
+                      <li 
+                        key={index} 
+                      >
+                        <div className = "comment singleSonCommentContainer" >
+                          <div className = "comment sonCommentOwnerInformationContainer">
+                            <div className="comment sonCommentOwnerAvator" onClick={() => doCheckProfile(comment.commentOwnerId)}>
+                              {}
+                            </div>
+                            <div className="comment sonCommentOwnerUsername">
+                              {comment.commentOwnerName} : 
+                            </div>
                           </div>
-                          <div className="comment sonCommentOwnerUsername">
-                            {comment.commentOwnerName} : 
+                          <div className="comment sonCommentcontent">
+                            {/* <textarea
+                                readOnly={true}
+                                className="comment introduction"
+                                rows="4"
+                                cols="50"
+                                value={content}
+                            /> */}
+                            {comment.content}
                           </div>
-                        </div>
-                        <div className="comment sonCommentcontent">
-                          {/* <textarea
-                              readOnly={true}
-                              className="comment introduction"
-                              rows="4"
-                              cols="50"
-                              value={content}
-                          /> */}
-                          {comment.content}
-                        </div>
-                      </div> 
-                    </li>
+                        </div> 
+                        <div className="comment reply-line"></div>
+                      </li>
+                    ))
+                      : <div>No Reply!</div>}
                   </ul>
                 )}
                 {replyspace.includes(comment.commentId) && (
