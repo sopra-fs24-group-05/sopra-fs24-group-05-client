@@ -73,7 +73,6 @@ const CreateTopic = () => {
   };
 
   const doBack = () => {
-    alert("Are you sure that you want to go back without saving?");
     navigate("/lobby");
   } 
   

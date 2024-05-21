@@ -250,6 +250,7 @@ const Comment = () => {
       }
     });
   };
+
   const doSubmit = async () => {
     try {
       const commentItemId=localStorage.getItem("currentItemId");
@@ -260,6 +261,8 @@ const Comment = () => {
       const requestBody = JSON.stringify({ commentOwnerName: commentOwnerName, commentItemId: commentItemId, commentOwnerId: commentOwnerId, content: content, score: commentRate});
       await api.post("/comments/create", requestBody);
       alert("Successfully create!");
+      const responseComments = await api.get(`/comments/itemId/${localStorage.getItem("currentItemId")}`);
+      setCommentList(responseComments.data);
     } catch (error) {
       alert(
         `Something went wrong during the create: \n${handleError(error)}`
