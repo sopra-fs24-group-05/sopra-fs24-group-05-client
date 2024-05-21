@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { api, handleError } from "helpers/api";
-// import Topic from "models/Topic";
+import User from "models/User";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/CreateTopic.scss";
@@ -58,8 +58,10 @@ const CreateTopic = () => {
   const [topicIntroduction, settopicIntroduction] = useState<string>(null);
 
   const doCreate = async () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser")) as User;
+    const editAllowed = currentUser.identity === "STUDENT";
     try {
-      const requestBody = JSON.stringify({ topicname, topicIntroduction });
+      const requestBody = JSON.stringify({ topicName: topicname, description: topicIntroduction, editAllowed: editAllowed });
       await api.post("/topics", requestBody);
       alert("Successfully create!");
       navigate("/lobby");

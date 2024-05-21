@@ -192,20 +192,31 @@ const Comment = () => {
       setMessage("");
     }
   };
+
   const handleThumbups = async (commentId) => {
-    const userId= localStorage.getItem("currentUserId");
-    const responseThumbsUp = await api.put(`/comments/LikeComment/${commentId}/${userId}`);
-    const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
-    if (commentIndex !== -1) {
-      const updatedCommentList = [...commentList];
-      updatedCommentList[commentIndex].commentThumbsUpNum = responseThumbsUp.data.thumbsUpNum;
-      setCommentList(updatedCommentList);
+    try {
+      const userId = localStorage.getItem("currentUserId");
+      const responseThumbsUp = await api.put(`/comments/LikeComment/${commentId}/${userId}`);
+      if (responseThumbsUp.data.isAlreadyLiked === true) {
+        alert("You have already liked!");
+        
+        return;
+      }
+      const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
+      if (commentIndex !== -1) {
+        const updatedCommentList = [...commentList];
+        updatedCommentList[commentIndex].thumbsUpNum = responseThumbsUp.data.thumbsUpNum;
+        setCommentList(updatedCommentList);
+      }
+      console.log(responseThumbsUp);
+    } catch (error) {
+      console.error(
+        `Something went wrong while fetching the item: \n${handleError(
+          error
+        )}`
+      );
     }
-    console.log(responseThumbsUp);
-    if(responseThumbsUp.data.isAlreadyLiked === true)
-      alert("You have already liked!");
-    else
-      window.location.reload();
+    
   };
   const reply = (commentId) => {
     // setReplySpace(!replyspace);
@@ -218,23 +229,19 @@ const Comment = () => {
     });
   }
   const sendReply = (commentId) => {
-    const fatherCommentId = commentId;
     const commentOwnerId = localStorage.getItem("currentUserId");
     const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
     const commentOwnerName = commentOwner.username;
-    const requestBody = JSON.stringify({ fatherCommentId, content:replyContent,commentOwnerId:commentOwnerId, CommentOwnerName:commentOwnerName});
-    api.post("reply/create", requestBody);
-    window.location.reload();
+    api.post("reply/create", { fatherCommentId: commentId, content: replyContent, commentOwnerId: commentOwnerId, commentOwnerName:commentOwnerName, commentItemId: localStorage.getItem("currentItemId")});
   }
   // const showAllReply = (commentId) =>{
   //   alert(commentId);
   //   setUnfoldAllReply(!unfoldAllReply);
   // }
-  const showAllReply = async(commentId) => {
-    const fatherCommentId=commentId;
-    const responseReply=await api.get(`reply/get/${fatherCommentId}`);
+  const showAllReply = async (commentId) => {
+    const responseReply = await api.get(`reply/get/${commentId}`);
     setReplyCommentList(responseReply.data);
-    alert(responseReply);
+    alert(responseReply.data);
     setUnfoldedComments((prevComments) => {
       if (prevComments.includes(commentId)) {
         return prevComments.filter((id) => id !== commentId);
@@ -253,7 +260,6 @@ const Comment = () => {
       const requestBody = JSON.stringify({ commentOwnerName: commentOwnerName, commentItemId: commentItemId, commentOwnerId: commentOwnerId, content: content, score: commentRate});
       await api.post("/comments/create", requestBody);
       alert("Successfully create!");
-      location.reload();
     } catch (error) {
       alert(
         `Something went wrong during the create: \n${handleError(error)}`
@@ -273,14 +279,13 @@ const Comment = () => {
   
   const doFollow = (currentUserId, currentItemId) => {
     const followItemId = currentItemId;
-    api.put(`/users/followItem/${currentUserId}`, { followItemId });
+    api.put(`/users/${currentUserId}/followItems`, followItemId);
     alert("Successfully follow!");
   }
 
   const doTranslate = async (isTranslated, commentId, content) => {
     try {
       if (isTranslated) {
-        // 恢复原始内容
         const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
         if (commentIndex !== -1) {
           const updatedCommentList = [...commentList];
@@ -289,7 +294,6 @@ const Comment = () => {
           setCommentList(updatedCommentList);
         }
       } else {
-        // 进行翻译
         const responseTranslate = await api.get("/translate", { params: { text: content, targetLanguage: navigator.language } });
         const translatedContent = responseTranslate.data;
         const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
