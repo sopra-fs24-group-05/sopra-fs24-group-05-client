@@ -35,12 +35,21 @@
   }
   &.field {
     display: flex;
+    align-items: center;
     flex-direction: column;
     justify-content: center;
   }
+  &.select-wrapper {
+    // flex: 1;
+    // margin-right: 10px;
+    position: relative;
+    flex: 0 0 auto;
+  }
   &.input {
+    flex: 1;
     height: 50px;
-    padding-left: 15px;
+    // left: 100px;
+    padding-left: 80px;
     margin-left: -4px;
     border: auto;
     border-radius: 0.75em;
@@ -49,11 +58,22 @@
     color: $textColor;
     width: 500px;
   }
+  &.select {
+    position: absolute;
+    // left: 0;
+    height: 75%;
+    left: 10px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+  }
   &.label {
     color: $textColor;
     margin-bottom: 10px;
     font-weight: 300;
   }
+  
   &.button {
     display: flex;
     justify-content: center;
@@ -113,5 +133,9 @@
     // @include center;
     flex-direction: column;
     margin-top: 20px;
+  }
+  li:hover {
+    background-color: lightblue;
+    cursor: pointer;
   }
 }

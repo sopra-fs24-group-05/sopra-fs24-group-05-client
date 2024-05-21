@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { api, handleError } from "helpers/api";
 import User from "models/User";
 import Topic from "models/Topic";
@@ -18,13 +18,21 @@ specific components that belong to the main one in the same file.
 const FormField = (props) => {
   return (
     <div className="search field">
-      <label className="search label">{props.label}</label>
-      <input
-        className="search input"
-        placeholder="search..."
-        value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
+      {props.label && <label className="search label">{props.label}</label>}
+      <div className="search select-wrapper">
+        <select
+          className="search select"
+          onChange={(e) => props.selectType(e.target.value)}
+        >  
+          <option value="topics">Topic</option>
+          <option value="items">Item</option>
+        </select>
+        <input
+          className="search input"
+          value={props.value}
+          onChange={(e) => props.inputChange(e.target.value)}
+        />
+      </div>
     </div>
   );
 };
@@ -32,26 +40,34 @@ const FormField = (props) => {
 FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.func,
+  inputChange: PropTypes.func,
+  selectType: PropTypes.func
 };
 
 const Search = () => {
   const navigate = useNavigate();
-  const [searchContent, setSearchContent] = useState<String>(null);
-  const [searchResult, setSearchResult] = useState<Topic[] | Item[]>(null);
-  const [isSearchDone, setIsSearchDone] = useState<Boolean>(false);
+  const [searchType, setSearchType] = useState<String>("topics");
+  const [searchContent, setSearchContent] = useState<String>("");
+  const [searchTopicResult, setSearchTopicResult] = useState<Topic[] | null>(null);
+  const [searchItemResult, setSearchItemResult] = useState<Item[] | null>(null);
+  const [isSearchDone, setIsSearchDone] = useState(false);
+  const [alreadySearched, setAlreadySearched] = useState(false);
 
   const doSearch = async () => {
+    setSearchTopicResult([]);
+    setSearchItemResult([]);
+    setIsSearchDone(false);
+    setAlreadySearched(true);
+
     try {
-    //   const requestBody = JSON.stringify({ searchContent });
-    //   const response = await api.get("/search", requestBody);
-    //   try {
-    //     const searchTopic: Topic[] = response as Topic[];
-    //     setSearchResult(searchTopic);
-    //   } catch (error) {
-    //     const searchItem: Item[] = response as Item[];
-    //     setSearchResult(searchItem);
-    //   }
+      const responseSearchResult = await api.get(`/${searchType}/search`, { params: {keyword: searchContent}});
+      if (searchType === "topics") {
+        setSearchTopicResult(responseSearchResult.data);
+      } else if (searchType === "items") {
+        setSearchItemResult(responseSearchResult.data);
+      } else {
+        alert("Invalid search!");
+      }
       setIsSearchDone(true);
     } catch (error) {
       alert(
@@ -59,7 +75,43 @@ const Search = () => {
       );
     }
   };
-  
+
+  // useEffect(() => {
+  //   const fetchHotListData = async () => {
+  //     try {
+  //       const userId = profileId;
+  //       const responseCommentList = await api.get(`/comments/userId/${userId}`);
+  //       // await new Promise((resolve) => setTimeout(resolve, 2000));
+  //       setPubCommentList(responseCommentList.data);
+  //     } catch (error) {
+  //       alert(
+  //         `Something went wrong during the get: \n${handleError(error)}`
+  //       );
+  //     }
+  //   };
+
+  //   fetchHotListData();
+  // }, []);
+
+  useEffect(() => {
+    if (searchContent.trim() !== "") {
+      doSearch();
+    }
+  }, [searchContent, searchType]);
+
+  const doCheckTopic = (topicName, topicId) => {
+    localStorage.setItem("currentTopic", topicName);
+    localStorage.setItem("currentTopicId", topicId);
+    navigate(`/topic/${topicName}`);
+  }
+
+  const doCheckItem = (itemId, topicName, topicId) => {
+    localStorage.setItem("currentItemId", itemId);
+    localStorage.setItem("currentTopic", topicName);
+    localStorage.setItem("currentTopicId", topicId);
+    navigate(`/comment/${itemId}`);
+  }
+
   return (
     <BaseContainer className="search">
       <h1 className="search title">
@@ -69,8 +121,8 @@ const Search = () => {
         You can search topics or items here.
       </h3>
       <div className="search container">
-        <FormField className="search form" onChange={(n) => setSearchContent(n)} />
-        <div className="search button" onClick={doSearch}>
+        <FormField className="search form" selectType={setSearchType} inputChange={setSearchContent} />
+        <div className="search button" onClick={() => doSearch()}>
           <svg 
             width="50" 
             height="50" 
@@ -86,26 +138,35 @@ const Search = () => {
           </svg>
         </div>
       </div>
-      { isSearchDone && (
+      { alreadySearched && (
         <div className="search displaycontainer">
           <div className="search displayform">
-            <label className="search resultListTitle">RESULT</label>
-            <ul className="search resultList">
-              {/* {searchResult ? searchResult.map((result, index) => (
+            <label className="search resultListTitle">RESULT {searchType.toUpperCase()}</label>
+            { searchType === "topics" ? ( isSearchDone ? (searchTopicResult.length > 0 ? <ul className="search resultList">
+              {searchTopicResult.map((topic, index) => (
                 <li 
                   key={index}
-                  onClick={() => doCheckResult(result.itemOwnerId)}
+                  onClick={() => doCheckTopic(topic.topicName, topic.topicId)}
                 >
-                  {result.itemOwnerName}: {result.content}
-                </li>
-              )) : <div>Loading...</div>} */}
-            </ul>
+                  {topic.topicName}
+                </li>))}  
+            </ul> : <div><br />No Topic Found.</div>) : (<div/>)) : (<div/>)}
+            { searchType === "items" ? ( isSearchDone ? (searchItemResult.length > 0 ? <ul className="search resultList">
+              {searchItemResult.map((item, index) => (
+                <li 
+                  key={index}
+                  onClick={() => doCheckItem(item.itemId, item.topic.topicName, item.topic.topicId)}
+                >
+                  {item.itemName}
+                </li>))}  
+            </ul> : <div><br />No Item Found.</div>) : (<div/>)) : (<div/>)}
+            <br />
           </div>
         </div>
       )}
       <div className="search hotTopicContainer">
         <div className="search hotTopicForm">
-          <h1 style={{textAlign: "center"}}>HOT TOPICS</h1>
+          <h1 style={{textAlign: "center"}}>HOT ITEMS</h1>
           <ul className="topic hotTopicList">
             {/* {items ? items.map((item, index) => (
               <li 
