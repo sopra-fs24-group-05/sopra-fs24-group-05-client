@@ -40,12 +40,12 @@ const Lobby = () => {
   return (
     <div>
       <div className="lobby container">
-        <div className="lobby box">
-          <div className="lobby mensa-image"></div>
+        <div className="lobby mensabox">
+          <div className="lobby mensabackground"></div>
           <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "MENSA");navigate(`/topic/${localStorage.getItem("currentTopic")}`);}}>MENSA</div>
         </div>
-        <div className="lobby box">
-          <div className="lobby course-image"></div>
+        <div className="lobby coursebox">
+          <div className="lobby coursebackground"></div>
           <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "COURSE");navigate(`/topic/${localStorage.getItem("currentTopic")}`);}}>COURSE</div>
         </div>
       </div>
