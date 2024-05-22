@@ -68,34 +68,44 @@ const Login = () => {
 
   return (
     <BaseContainer className="login">
-      <div className="login container">
-        <div className="login form">
-          <FormField
-            label="Username"
-            value={username}
-            onChange={(un: string) => setUsername(un)}
-          />
-          <FormField
-            label="Password"
-            value={password}
-            isPassword={true}
-            onChange={(n) => setPassword(n)}
-          />
-          <div className="login button-container">
-            <Button className="login"
-              disabled={!username || !password}
-              width="100%"
-              onClick={() => doLogin()}
-            >
-              Login
-            </Button>
-            <Button className="register"
-              // disabled={!username || !name}
-              width="100%"
-              onClick={() => naviRegister()}
-            >
-              Register
-            </Button>
+      <div className="login pagecontainer">
+        <div className = "login introcontainer">
+          <h1 className = "login introduction">Find Everything you want!</h1>
+          <h1 className = "login introduction">Comment Everything you want!</h1>
+          <h1 className = "login introduction">Score Everything you want!</h1>
+        </div>
+        <div className="login logincontainer">
+          <div className ="login welcometitle">
+            Welcome to RankEverything!
+          </div>
+          <div className="login form">
+            <FormField
+              label="Username"
+              value={username}
+              onChange={(un: string) => setUsername(un)}
+            />
+            <FormField
+              label="Password"
+              value={password}
+              isPassword={true}
+              onChange={(n) => setPassword(n)}
+            />
+            <div className="login button-container">
+              <Button className="login"
+                disabled={!username || !password}
+                width="100%"
+                onClick={() => doLogin()}
+              >
+                Login
+              </Button>
+              <Button className="register"
+                // disabled={!username || !name}
+                width="100%"
+                onClick={() => naviRegister()}
+              >
+                Register
+              </Button>
+            </div>
           </div>
         </div>
       </div>

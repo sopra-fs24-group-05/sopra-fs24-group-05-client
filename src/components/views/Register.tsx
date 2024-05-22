@@ -61,39 +61,49 @@ const Register = () => {
 
   return (
     <BaseContainer className="register">
-      <div className="register container">
-        <div className="register form">
-          <FormField
-            label="Username"
-            value={username}
-            onChange={(un: string) => setUsername(un)}
-          />
-          <FormField
-            label="Password"
-            value={[password]}
-            isPassword={true}
-            onChange={(n) => setPassword(n)}
-          />
-          <FormField
-            label="Register Code (optional)"
-            value={token}
-            onChange={(n) => setToken(n)}
-          />
-          <div className="register button-container">
-            <Button className="register"
-              disabled={!username || !password}
-              width="100%"
-              onClick={() => doRegister()}
-            >
-              Confirm
-            </Button>
-            <Button className="register"
-              width="100%"
-              onClick={() => backToLogin()}
-            >
-              Back
-            </Button>
+      <div className="register pagecontainer">
+        <div className="register registercontainer">
+          <div className ="register welcometitle">
+            Create Account Here
           </div>
+          <div className="register form">
+            <FormField
+              label="Username"
+              value={username}
+              onChange={(un: string) => setUsername(un)}
+            />
+            <FormField
+              label="Password"
+              value={[password]}
+              isPassword={true}
+              onChange={(n) => setPassword(n)}
+            />
+            <FormField
+              label="Register Code (optional)"
+              value={token}
+              onChange={(n) => setToken(n)}
+            />
+            <div className="register button-container">
+              <Button className="register"
+                disabled={!username || !password}
+                width="100%"
+                onClick={() => doRegister()}
+              >
+                Confirm
+              </Button>
+              <Button className="register"
+                width="100%"
+                onClick={() => backToLogin()}
+              >
+                Back
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className = "register introcontainer">
+          <h1 className = "register introduction">A few clicks away</h1>
+          <h1 className = "register introduction">from expressing your own</h1>
+          <h1 className = "register introduction">points of view</h1>
         </div>
       </div>
     </BaseContainer>
