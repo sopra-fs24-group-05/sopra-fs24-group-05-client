@@ -40,47 +40,28 @@ const PlayerProfile = ({ user }: { user: User }) => (
   </div>
 );
 
-const UserFormField = (props) => {  
-  const { profileId } = useParams();
-  const [imageUrl, setImageUrl] = useState<String>(null);
-  
-  const handleImageUpload = (event) => {
+const UserFormField = (props) => {    
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => {
-        setImageUrl(reader.result);
+      reader.onload = async () => {
+        try {
+          const updatedUser = {...props.user, avatar: reader.result};
+          await api.put(`/users/editAvatar/${localStorage.getItem("currentUserId")}`, reader.result);
+          props.setUser(updatedUser);
+        } catch (error) {
+          alert(
+            `Something went wrong during the get: \n${handleError(error)}`
+          );
+        }
       };
       reader.readAsDataURL(file);
     }
-    // api.put("/user/profile", imageUrl);
+    
   };
-  
-  const followUser = () => {
-    try{
-      const userId = localStorage.getItem("currentUserId");
-      const followUserId = props.user.userId;
-      api.put(`/users/followUser/${userId}`, { followUserId });
-      alert("Successfully follow!");
-    } catch (error){
-      alert(
-        `Something went wrong during the follow: \n${handleError(error)}`
-      );
-    }
-  }
-
-  let followButton = (
-    <Button className="followButton"
-      width="100%"
-      onClick={followUser}
-    >
-      Follow
-    </Button>
-  );
 
   try {
-    const user = props.user;
-    
     return (
       <div className="profile field">
         <h2>{props.module}</h2>
@@ -88,7 +69,7 @@ const UserFormField = (props) => {
         <div className="profile avatar-container">
           <img
             className="profile avatar"
-            src={imageUrl}
+            src={props.user.avatar}
             alt="User Avatar"
             onClick={() => document.getElementById("uploadInput").click()}
           />
@@ -98,9 +79,8 @@ const UserFormField = (props) => {
             style={{ display: "none" }}
             onChange={handleImageUpload}
           />
-          {(profileId !== localStorage.getItem("currentUserId")) && followButton}
         </div>
-        <PlayerProfile user={user} />
+        <PlayerProfile user={props.user} />
         <br></br>
       </div>
     );
@@ -114,7 +94,8 @@ const UserFormField = (props) => {
 UserFormField.propTypes = {
   module: PropTypes.string,
   label: PropTypes.string,
-  user: PropTypes.string
+  user: PropTypes.string,
+  setUser: PropTypes.func
 };
 
 const FormField = (props) => {  
@@ -131,26 +112,10 @@ const FormField = (props) => {
     const fetchListData = async () => {
       try {
         const userId = profileId;
-        const responseFollowUserList = await api.get(`/users/${userId}/followUsers`);
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
-        setFollowUserList(responseFollowUserList.data);
-      } catch (error) {
-        alert(
-          `Something went wrong during the get: \n${handleError(error)}`
-        );
-      }
-    };
-
-    fetchListData();
-  }, []);
-
-  useEffect(() => {
-    const fetchListData = async () => {
-      try {
-        const userId = profileId;
         const responseFollowItemList = await api.get(`/users/${userId}/followItems`);
         // await new Promise((resolve) => setTimeout(resolve, 2000));
         setFollowItemList(responseFollowItemList.data);
+        console.log(followItemList);
       } catch (error) {
         alert(
           `Something went wrong during the get: \n${handleError(error)}`
@@ -183,30 +148,17 @@ const FormField = (props) => {
   switch (props.module) {
   case "Follows":
     content = (
-      <div className="profile follows-container">
-        <ul className="profile follows-container list">
-          {followUserList && followUserList.map((user, index) => (
-            <li 
-              key={index} 
-              // onClick={() => {navigate(`/profile/${user.userId}`);window.location.reload();}}
-            >
-              {user.username}
-            </li>
-          ))}
-        </ul>
-        {/* <h3 className="profile follows-container list title">topics</h3> */}
-        <ul className="profile follows-container list">
-          {followItemList && followItemList.map((item, index) => (
-            <li 
-              key={index} 
-              // onClick={() => navigate(`/comment/${item.itemId}`)}
-            >
-              {item.itemname}
-            </li>
-          ))}
-        </ul>
-        {/* <h3 className="profile follows-container list title">topics</h3> */}
-      </div>
+      <ul>
+        {followItemList.length > 0 ? followItemList.map((item, index) => (
+          <li 
+            className="profile followItem"
+            key={index} 
+            onClick={() => {localStorage.setItem("currentTopicId", item.followItemTopicId); localStorage.setItem("currentItemId", item.followItemId);navigate(`/comment/${item.followItemId}`)}}
+          >
+            {item.followItemname}
+          </li>
+        )) : <div>No Follow Items.</div>}
+      </ul>
     );
     break;
   case "Topics":
@@ -295,13 +247,6 @@ const Profile = () => {
         const response = await api.get(`/users/${userId}`, { params: {userId: userId} });
         
         setUser(response.data);
-        console.log("request to:", response.request.responseURL);
-        console.log("status code:", response.status);
-        console.log("status text:", response.statusText);
-        console.log("requested data:", response.data);
-
-        // See here to get more data.
-        console.log(response);
       } catch (error) {
         console.error(
           `Something went wrong while fetching the user information: \n${handleError(
@@ -327,6 +272,7 @@ const Profile = () => {
             <UserFormField
               module="Information"
               user={user}
+              setUser={setUser}
             />
             <br></br>
             <FormField

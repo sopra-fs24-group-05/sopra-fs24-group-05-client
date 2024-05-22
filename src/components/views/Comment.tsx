@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import User from "models/User";
@@ -135,26 +135,9 @@ const Comment = () => {
   const [replyCommentList,setReplyCommentList] = useState<Comment[]>(null);
   // const [unfoldAllReply, setUnfoldAllReply] = useState(false);
   const [unfoldedComments, setUnfoldedComments] = useState([]);
-  
+  const ws = useRef(null);
+
   useEffect(() => {
-    function chatEstablish() {
-      const ws = new WebSocket(`${getDomain().replace(/^http/, "ws")}/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
-      
-      ws.onopen = () => {
-        console.log("Connected to websocket");
-      };
-
-      ws.onmessage = (event) => {
-        setChatHistory(prevMessages => [...prevMessages, event.data]);
-      };
-
-      ws.onclose = () => {
-        console.log("Disconnected");
-      };
-      
-      return () => { ws.close(); };
-    }
-
     async function fetchData() {
       try {
         const itemId = localStorage.getItem("currentItemId");
@@ -162,7 +145,6 @@ const Comment = () => {
         const responseItem = await api.get(`/items/getByItemId/${itemId}`);
         // Get the returned item 
         setItem(responseItem.data);
-        console.log(item);
         setItemname(responseItem.data.itemName);
         setItemIntroduction(responseItem.data.content);
         setItemAverageScore(responseItem.data.score);
@@ -185,7 +167,7 @@ const Comment = () => {
         setUsername(User.username)
         // // See here to get more data.
         // console.log(response);
-        chatEstablish();
+        
       } catch (error) {
         console.error(
           `Something went wrong while fetching the item: \n${handleError(
@@ -203,19 +185,54 @@ const Comment = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    function chatEstablish() {    
+      ws.current = new WebSocket(`${getDomain().replace(/^http/, "ws")}/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
+      ws.current.onopen = async () => {
+        console.log("Connected to websocket");
+        try {
+          const response = await api.get(`/chatMessage/${item.itemId}`);
+          setChatHistory(response.data);
+        } catch (error) {
+          console.error(
+            `Something went wrong while fetching the chat history: \n${handleError(
+              error
+            )}`
+          );
+        }
+      };
+
+      ws.current.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        setChatHistory(prevMessages => [...prevMessages, message]);
+      };
+
+      ws.current.onclose = () => {
+        console.log("Disconnected");
+      };
+      
+      return () => { ws.current.close(); };
+    }
+
+    if (item) {
+      chatEstablish();
+    }
+  }, [item]);
+
   const ChatSpace = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSendMessage = () => {
-    const ws = new WebSocket(`${getDomain().replace(/^http/, "ws")}/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
-    ws.onopen = () => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       if (message.trim() !== "") {
-        setChatHistory([...chatHistory, { text: message, sender: username }]);
-        ws.send(message);
+        const sendMessage = { content: message, userId: localStorage.getItem("currentUserId"), itemId: localStorage.getItem("currentItemId") };
+        ws.current.send(JSON.stringify(sendMessage));
         setMessage("");
-      }
-    };
+      } 
+    } else {
+      console.log("WebSocket is not open");
+    }
   };
 
   const handleThumbups = async (commentId) => {
@@ -297,6 +314,7 @@ const Comment = () => {
   const doBack = () => {
     localStorage.removeItem("currentItem");
     localStorage.removeItem("currentItemId");
+    ws.current.close();
     navigate(`/topic/${localStorage.getItem("currentTopicId")}`)
   } 
 
@@ -354,10 +372,9 @@ const Comment = () => {
         <div className="comment chatspacecontainer">
           <div className="comment chatspaceform">
             <div className="comment chatspace">
-              {/* 显示聊天历史 */}
               {chatHistory.map((msg, index) => (
                 <div key={index}>
-                  <strong>{msg.sender}: </strong> {msg.text}
+                  <strong>{msg.userName}: </strong> {msg.content}
                 </div>
               ))}
             </div>
