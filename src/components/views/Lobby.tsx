@@ -40,13 +40,13 @@ const Lobby = () => {
   return (
     <div>
       <div className="lobby container">
-        <div className="lobby mensabox">
+        <div className="lobby mensabox" onClick={() => {localStorage.setItem("currentTopic", "MENSA");navigate(`/topic/${localStorage.getItem("currentTopic")}`);}}>
           <div className="lobby mensabackground"></div>
-          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "MENSA");navigate(`/topic/${localStorage.getItem("currentTopic")}`);}}>MENSA</div>
+          <div className="lobby text-wrapper">MENSA</div>
         </div>
-        <div className="lobby coursebox">
+        <div className="lobby coursebox" onClick={() => {localStorage.setItem("currentTopic", "COURSE");navigate(`/topic/${localStorage.getItem("currentTopic")}`);}}>
           <div className="lobby coursebackground"></div>
-          <div className="lobby text-wrapper" onClick={() => {localStorage.setItem("currentTopic", "COURSE");navigate(`/topic/${localStorage.getItem("currentTopic")}`);}}>COURSE</div>
+          <div className="lobby text-wrapper">COURSE</div>
         </div>
       </div>
       {isAdmin && 
