@@ -50,6 +50,7 @@ const Search = () => {
   const [searchContent, setSearchContent] = useState<String>("");
   const [searchTopicResult, setSearchTopicResult] = useState<Topic[] | null>(null);
   const [searchItemResult, setSearchItemResult] = useState<Item[] | null>(null);
+  const [hotItemList, setHotItemList] = useState<Item[] | null>(null);
   const [isSearchDone, setIsSearchDone] = useState(false);
   const [alreadySearched, setAlreadySearched] = useState(false);
 
@@ -76,22 +77,21 @@ const Search = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchHotListData = async () => {
-  //     try {
-  //       const userId = profileId;
-  //       const responseCommentList = await api.get(`/comments/userId/${userId}`);
-  //       // await new Promise((resolve) => setTimeout(resolve, 2000));
-  //       setPubCommentList(responseCommentList.data);
-  //     } catch (error) {
-  //       alert(
-  //         `Something went wrong during the get: \n${handleError(error)}`
-  //       );
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchHotListData = async () => {
+      try {
+        const responseHotItemList = await api.get("/items/sortedByPopularity");
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        setHotItemList(responseHotItemList.data);
+      } catch (error) {
+        alert(
+          `Something went wrong during the get: \n${handleError(error)}`
+        );
+      }
+    };
 
-  //   fetchHotListData();
-  // }, []);
+    fetchHotListData();
+  }, []);
 
   useEffect(() => {
     if (searchContent.trim() !== "") {
@@ -168,17 +168,14 @@ const Search = () => {
         <div className="search hotTopicForm">
           <h1 style={{textAlign: "center"}}>HOT ITEMS</h1>
           <ul className="topic hotTopicList">
-            {/* {items ? items.map((item, index) => (
+            {hotItemList ? hotItemList.map((item, index) => (
               <li 
                 key={index}
-                onClick={() => doComment(item)}
+                onClick={() => doCheckItem(item.itemId, item.topic.topicName, item.topic.topicId)}
               >
                 {item.itemname}
               </li>
-            )) : <div>Loading...</div>} */}
-            <li>hot topic 1</li>
-            <li>hot topic 2</li>
-            <li>hot topic 3</li>
+            )) : <div>Loading...</div>}
           </ul>
         </div>
       </div> 

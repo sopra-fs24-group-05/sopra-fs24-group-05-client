@@ -10,6 +10,7 @@ import "styles/views/Comment.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import { OutputFileType } from "typescript";
+import { getDomain } from "helpers/getDomain";
 
 /*
 It is possible to add multiple components inside a single file,
@@ -136,6 +137,24 @@ const Comment = () => {
   const [unfoldedComments, setUnfoldedComments] = useState([]);
   
   useEffect(() => {
+    function chatEstablish() {
+      const ws = new WebSocket(`${getDomain().replace(/^http/, "ws")}/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
+      
+      ws.onopen = () => {
+        console.log("Connected to websocket");
+      };
+
+      ws.onmessage = (event) => {
+        setChatHistory(prevMessages => [...prevMessages, event.data]);
+      };
+
+      ws.onclose = () => {
+        console.log("Disconnected");
+      };
+      
+      return () => { ws.close(); };
+    }
+
     async function fetchData() {
       try {
         const itemId = localStorage.getItem("currentItemId");
@@ -166,6 +185,7 @@ const Comment = () => {
         setUsername(User.username)
         // // See here to get more data.
         // console.log(response);
+        chatEstablish();
       } catch (error) {
         console.error(
           `Something went wrong while fetching the item: \n${handleError(
@@ -179,6 +199,7 @@ const Comment = () => {
       // }
       }
     }
+    
     fetchData();
   }, []);
 
@@ -187,10 +208,14 @@ const Comment = () => {
   };
 
   const handleSendMessage = () => {
-    if (message.trim() !== "") {
-      setChatHistory([...chatHistory, { text: message, sender: "Me" }]);
-      setMessage("");
-    }
+    const ws = new WebSocket(`${getDomain().replace(/^http/, "ws")}/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
+    ws.onopen = () => {
+      if (message.trim() !== "") {
+        setChatHistory([...chatHistory, { text: message, sender: username }]);
+        ws.send(message);
+        setMessage("");
+      }
+    };
   };
 
   const handleThumbups = async (commentId) => {
@@ -232,7 +257,7 @@ const Comment = () => {
     const commentOwnerId = localStorage.getItem("currentUserId");
     const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
     const commentOwnerName = commentOwner.username;
-    api.post("reply/create", { fatherCommentId: commentId, content: replyContent, commentOwnerId: commentOwnerId, commentOwnerName:commentOwnerName, commentItemId: localStorage.getItem("currentItemId")});
+    api.post("reply/create", { fatherCommentId: commentId, content: replyContent, commentOwnerId: commentOwnerId, commentOwnerName:commentOwnerName, commentItemId: localStorage.getItem("currentItemId"), thumbsUpNum: 0});
   }
   // const showAllReply = (commentId) =>{
   //   alert(commentId);
@@ -241,7 +266,6 @@ const Comment = () => {
   const showAllReply = async (commentId) => {
     const responseReply = await api.get(`reply/get/${commentId}`);
     setReplyCommentList(responseReply.data);
-    alert(responseReply.data);
     setUnfoldedComments((prevComments) => {
       if (prevComments.includes(commentId)) {
         return prevComments.filter((id) => id !== commentId);
