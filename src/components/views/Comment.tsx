@@ -188,7 +188,7 @@ const Comment = () => {
   useEffect(() => {
     function chatEstablish() {    
       const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-      ws.current = new WebSocket(`${protocol}://sopra-fs24-group-05-server.oa.r.appspot.com/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
+      ws.current = new WebSocket(`${protocol}://${new URL(getDomain()).host}/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`);
       // ws.current = new WebSocket(`wss://sopra-fs24-group-05-server.oa.r.appspot.com/WebServer/${item.itemId}/${localStorage.getItem("currentUserId")}`)
       ws.current.onopen = async () => {
         console.log("Connected to websocket");
