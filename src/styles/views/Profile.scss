@@ -102,6 +102,12 @@
     left: 50%; /* 水平居中 */
     transform: translateX(-50%); /* 水平居中 */
   }
+  &.followItem {
+    cursor: pointer;
+  }
+  &.followItem:hover{
+    background-color: lightblue;
+  }
   
 
 .playerprofile {
