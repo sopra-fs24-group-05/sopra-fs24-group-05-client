@@ -1,4 +1,4 @@
-# Sopra 24 - Rank Everything Server - by Group 5
+# Sopra 24 - Rank Everything Client - by Group 5
 
 ## Project Description
 
@@ -34,95 +34,10 @@ npm run dev
 
 Open your web browser and go to `http://localhost:3000` to view the application.
 
-## Building with Gradle
-
-You can use the local Gradle Wrapper to build the application.
-
-- macOS: `./gradlew`
-- Linux: `./gradlew`
-- Windows: `./gradlew.bat`
-
-### Build
-
-```
-./gradlew build
-```
-
-### Run
-
-```
-./gradlew bootRun
-```
-
-You can verify that the server is running by visiting `localhost:8080` in your browser.
-
-### Test
-
-```
-./gradlew test
-```
-
-### Development Mode
-
-You can start the backend in development mode, this will automatically trigger a new build and reload the application once the content of a file has been changed.
-
-Start two terminal windows and run
-
-```
-./gradlew build --continuous
-```
-
-and in the other one:
-
-```
-./gradlew bootRun
-```
-
-If you want to avoid running all tests with every change, use the following command instead:
-
-```
-./gradlew build --continuous -xtest
-```
 
 ## Illustrations
 
-### User Registration
-
-The user registration process involves creating an account by providing a username, name, and password. This allows users to access the full features of the application. Below is a screenshot of the registration page.
-
-需要补图
-
-*Figure 1: User Registration Page*
-
-
-
-### Topic Creation
-
-Users can create new topics where items can be added and ranked. The topic creation page allows users to specify the topic title, description, and settings regarding who can contribute to the topic. Below is a screenshot of the topic creation page.
-
-需要补图
-
-*Figure 2: Topic Creation Page*
-
-
-
-### Item Ranking
-
-Within a topic, users can add items and assign scores to these items based on their preferences. The ranking system aggregates these scores to display a real-time ranking of items. Below is a screenshot of the item ranking interface.
-
-需要补图
-
-*Figure 3: Item Ranking Interface*
-
-
-
-### Commenting System
-
-Users can engage in discussions by commenting on items within a topic. They can also reply to comments and like them, enhancing interaction and community engagement. Below is a screenshot of the commenting system.
-
-需要补图
-
-*Figure 4: Commenting System Interface*
+The same as the description in README.md in Server.
 
 ## Roadmap
 
