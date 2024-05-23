@@ -37,7 +37,7 @@ Ziqi Yang
 
 ### week 2 (24/04/17~24/04/24)
 
-* Ziqi Yang
+Ziqi Yang
 
  1.implement createtopic page in front-end(#10)
 
@@ -54,8 +54,7 @@ Ziqi Yang
  
   * modify API of comment page to get back item introduction from back-end.
 
-
-* Zheyuan Fu
+Zheyuan Fu
 
  1.implement comment page in front-end(#8)
 
