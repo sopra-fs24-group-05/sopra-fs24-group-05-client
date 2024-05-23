@@ -133,9 +133,7 @@ const CreateItem = () => {
       const requestBody = JSON.stringify({ topicId: itemTopicId, itemName: itemname, content: itemIntroduction });
       await api.post(`/items/byTopicId/${itemTopicId}`, requestBody);
       alert("Successfully create!");
-      localStorage.removeItem("currentTopic");
-      localStorage.removeItem("currentTopicId");
-      navigate("/lobby");
+      navigate(`/topic/${localStorage.getItem("currentTopic")}`);
     } catch (error) {
       alert(
         `Something went wrong during the create: \n${handleError(error)}`
@@ -144,7 +142,7 @@ const CreateItem = () => {
   };
 
   const doBack = () => {
-    navigate("/topic/:topicId");
+    navigate(`/topic/${localStorage.getItem("currentTopic")}`);
   } 
   
 

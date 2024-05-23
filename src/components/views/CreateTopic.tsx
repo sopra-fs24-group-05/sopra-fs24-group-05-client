@@ -59,12 +59,11 @@ const CreateTopic = () => {
 
   const doCreate = async () => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser")) as User;
-    const editAllowed = currentUser.identity === "STUDENT";
     try {
-      const requestBody = JSON.stringify({ topicName: topicname, description: topicIntroduction, editAllowed: editAllowed });
+      const requestBody = JSON.stringify({ topicName: topicname, description: topicIntroduction, editAllowed: true, ownerId: localStorage.getItem("currentUserId") });
       await api.post("/topics", requestBody);
       alert("Successfully create!");
-      navigate("/lobby");
+      navigate("/topicList");
     } catch (error) {
       alert(
         `Something went wrong during the create: \n${handleError(error)}`
@@ -73,7 +72,7 @@ const CreateTopic = () => {
   };
 
   const doBack = () => {
-    navigate("/lobby");
+    navigate("/topicList");
   } 
   
 
@@ -103,7 +102,7 @@ const CreateTopic = () => {
               width="100%"
               onClick={() => doCreate()}
             >
-              CREATETOPIC
+              CREATE TOPIC
             </Button>
           </div>
         </div>
