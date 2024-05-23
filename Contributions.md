@@ -62,6 +62,7 @@ Zheyuan Fu
   * write comment page ui and write suitable API to get back itemName, itemIntroduction.
   * write suitable API to post back commentContent. commentOwnerName, commentOwnerId to back-end.
   * write suitable API to get back commentContent. commentOwnerName, commentOwnerId from back-end and display it in this page.
+  * implement router of comment page
 
  2.implement chatspace in front-end(#8)
  
@@ -74,31 +75,31 @@ Zheyuan Fu
 
 Ziqi Yang
 
- 1.implement search page in front-end(#2)
+ 1.implement search page in front-end(#21)
 
   * write search page ui and write suitable API to get back itemName, TopicName from back-end by keyword.
   * write a select module to switch the search type from item to topic or from topic to item.
   * implement router of search page
 
- 2.add thumbups function in comment page in front-end(#7)
+ 2.add thumbsup function in comment page in front-end(#11)
  
-  * write lobby page ui and write suitable function of this page which is navigating to two main topics Mensa and Course.
-  * implement router of lobby page
-
+  * write thumbsup function which can count handle thumbsup request. send thumbup operation to back-end and get back total thumbsup number from back-end
+  * write suitable Ui of it.
 
  Zheyuan Fu
 
- 1.implement login page in front-end(#3)
+ 1.add averagescore function in comment page in front-end(#12)
 
-  * write login page ui and write suitable API to put back username, password and let back-end to confirm them.
-  * implement router of login page
+  * write score function which can get back average score from back-end
+  * write suitable Ui of it.
 
- 2.implement header in front-end(#7)
+ 2.add score(rate) function (#11)
  
-  * write header ui and write suitable function of this module which is navigating to lobby page, search page and profile page.
-  * paint search icon and profile icon for header
+  * write score function which can count handle rate request. send score to back-end.
+  * write suitable Ui of it.(five stars)
 
- 3.implement createitem page in front-end(#5)
+ 3.modify commentList function and ui in front-end(#13)
  
-  * write createitem page ui and write suitable API to post back topicId and let back-end to create new item under the topic.
-  * implement router of createitem page
+  * add reply button and show-all-reply button in commentList
+  * modify commentList UI to make comments  be displayed more clearly
+
