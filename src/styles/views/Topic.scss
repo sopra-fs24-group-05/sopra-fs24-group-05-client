@@ -4,7 +4,7 @@
   &.titlecontainer {
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 20px;
   }
   &.introductioncontainer {
@@ -94,6 +94,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  &.select {
+    font-size: 20px;
+    position: relative;
+    left: 20px;
+    border: none;
+    background-color: transparent;
+    margin-top:15px
   }
   &.label {
     margin-top: 10px;
