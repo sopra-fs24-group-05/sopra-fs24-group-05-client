@@ -173,7 +173,7 @@ const Search = () => {
                 key={index}
                 onClick={() => doCheckItem(item.itemId, item.topic.topicName, item.topic.topicId)}
               >
-                {item.itemname}
+                {item.itemName}
               </li>
             )) : <div>Loading...</div>}
           </ul>

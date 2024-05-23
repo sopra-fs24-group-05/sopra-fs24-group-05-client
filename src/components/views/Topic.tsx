@@ -47,6 +47,7 @@ const Topic = () => {
   const navigate = useNavigate();
   const [items, setItems] = useState<Item[]>(null);
   const [topicname, setTopicname] = useState<string>(localStorage.getItem("currentTopic"));
+  const [sortType, setSortType] = useState<string>("default");
   let content = <ul/>;
 
   useEffect(() => {
@@ -57,6 +58,16 @@ const Topic = () => {
         const responseTopic = await api.get(`/topics/topicName/${topicName}`);
         localStorage.setItem("currentTopicId", responseTopic.data.id);
         const responseitems = await api.get(`/items/byTopicName/${topicName}`);
+        if(sortType=== "popularity"){
+          const responseitems = await api.get(`/items/sortedByCommentCount/${responseTopic.data.id}`);
+          setItems(responseitems.data);
+          console.log(responseitems.data);
+        }
+        if(sortType==="default"){
+          const responseitems = await api.get(`/items/byTopicName/${topicName}`);
+          setItems(responseitems.data);
+          console.log(responseitems.data);
+        }
         // await new Promise((resolve) => setTimeout(resolve, 500));
         // Get the returned item 
         setItems(responseitems.data);
@@ -92,12 +103,23 @@ const Topic = () => {
     navigate(`/comment/${item.itemId}`);
   }
 
+  // const doChange = () => {
+  //   setChange(!change);
+  // }
+
   return (
     <BaseContainer className="topic">
       <div className="topic titlecontainer">
         <FormFieldTitle
           value={`${topicname}`}
         />
+        <select
+          className="topic select"
+          onChange={(un: string) => setSortType(un)}
+        >  
+          <option value="popularity">Popularity</option>
+          <option value="default">Default</option>
+        </select>
       </div>
       <div className="topic displaycontainer">
         <div className="topic displayform">
