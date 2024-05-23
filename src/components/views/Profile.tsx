@@ -143,6 +143,49 @@ const FormField = (props) => {
     fetchListData();
   }, []);
 
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const userId = profileId;
+        const responseBannedList = await api.get(`/comments/userId/${userId}`);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        setBannedList(responseBannedList.data);
+      } catch (error) {
+        alert(
+          `Something went wrong during the get: \n${handleError(error)}`
+        );
+      }
+    };
+
+    fetchListData();
+  }, []);
+
+  const doTranslate = async (isTranslated, commentId, content) => {
+    try {
+      if (isTranslated) {
+        const commentIndex = pubCommentList.findIndex(comment => comment.commentId === commentId);
+        if (commentIndex !== -1) {
+          const updatedCommentList = [...pubCommentList];
+          updatedCommentList[commentIndex].content = updatedCommentList[commentIndex].originalContent;
+          updatedCommentList[commentIndex].isTranslated = false;
+          setPubCommentList(updatedCommentList);
+        }
+      } else {
+        const responseTranslate = await api.get("/translate", { params: { text: content, targetLanguage: navigator.language } });
+        const translatedContent = responseTranslate.data;
+        const commentIndex = pubCommentList.findIndex(comment => comment.commentId === commentId);
+        if (commentIndex !== -1) {
+          const updatedCommentList = [...pubCommentList];
+          updatedCommentList[commentIndex].content = translatedContent;
+          updatedCommentList[commentIndex].originalContent = content;
+          updatedCommentList[commentIndex].isTranslated = true;
+          setPubCommentList(updatedCommentList);
+        }
+      }
+    } catch (error) {
+      console.error("Translation failed:", error);
+    }
+  };
   
   let content = null;
   switch (props.module) {
@@ -161,21 +204,35 @@ const FormField = (props) => {
       </ul>
     );
     break;
-  case "Topics":
-    content = (
-      <ul>
-        {pubTopicList.map((topic, index) => (
-          <li key={index}>{topic.topicname}</li>
-        ))}
-      </ul>
-    );
-    break;
   case "Comments":
     content = (
-      <ul>
-        {pubCommentList && pubCommentList.map((comment, index) => (
-          <li key={index}>{comment.content}</li>
-        ))}
+      <ul className="profile commentList">
+        {pubCommentList ? (pubCommentList.map((comment, index) => (
+          <li key={index}>
+            <div className = "comment singlecommentcontainer" >
+              <div className="comment commentownerInformationcontainer">
+                <div className="comment commentownerUsername">
+                  <strong>{comment.commentItemTopicName}/{comment.commentItemName}</strong>
+                </div>
+              </div>
+              <div className="comment commentcontent">
+                {comment.content}
+              </div>
+              <div className="comment replyandthumbupscontainer">
+                <div className="comment thumbups">
+                  <div className="comment thumbupsButton">
+                    <svg className="thumbupsLikedIcon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M860.032 341.12h-182.08c7.488-17.408 14.72-38.528 18.048-60.544 5.952-39.872 4.992-87.36-18.368-129.088-21.76-38.848-50.304-60.928-83.52-61.376-30.72-0.384-53.888 18.176-65.728 33.408a199.296 199.296 0 0 0-32.064 59.264l-1.92 5.184c-5.44 14.976-10.88 29.952-23.04 51.456-19.712 34.816-48.832 56.128-77.696 74.368a391.936 391.936 0 0 1-30.976 17.92v552.448a4621.952 4621.952 0 0 0 351.872-5.312c51.264-2.752 100.672-28.544 127.488-76.032 24.32-43.136 55.168-108.16 74.368-187.264 20.416-84.16 24.64-152.704 24.576-195.968-0.128-46.336-38.72-78.4-80.96-78.4z m-561.344 541.312V341.12H215.808c-59.712 0-113.408 42.048-120.896 104.32a1376 1376 0 0 0 0.64 330.368c7.36 58.688 56.128 100.032 113.024 102.848 25.024 1.28 55.552 2.56 90.112 3.712z" fill="#000000"></path></svg>
+                  </div>
+                  <div className="comment thumbupsNumber">{comment.thumbsUpNum}</div>
+                </div>
+              </div>
+              <div className="comment translate">
+                <div className="comment translateButton" onClick={() => doTranslate(comment.isTranslated, comment.commentId, comment.content)}>{comment.isTranslated ? "Restore" : "Translate"}</div>
+              </div>
+              <div className="comment bottom-line"></div>
+            </div>
+          </li>
+        ))) : (<div>Loading...</div>)}
       </ul>
     )
     break;
@@ -263,7 +320,7 @@ const Profile = () => {
   }, []);
   
   
-  if (user.identity === "STUDENT") { // only for test
+  if (user.identity === "STUDENT") {
     // student
     return (
       <BaseContainer className="profile">
@@ -356,49 +413,7 @@ const Profile = () => {
           </div>
         </div>
       </BaseContainer>)
-  } else if (user.identity === "TEACHER") {
-    // teacher
-    return (
-      <BaseContainer>
-        <div className="profile container">
-          <div className="profile form">
-            <UserFormField
-              module="Information"
-              user={user}
-            />
-            <br></br>
-            <FormField
-              module="My Topics"
-            />
-            <div className="profile button-container">
-              <Button className="profile button back"
-                width="100%"
-                onClick={() => {window.history.back();}}
-              >
-                back
-              </Button>
-              {profileId === localStorage.getItem("currentUserId") ? (
-                <>
-                  <Button className="profile button logout"
-                    width="100%"
-                    onClick={logout}
-                  >
-                    logout
-                  </Button>
-                  <Button className="profile button edit"
-                    width="100%"
-                  >
-                    edit
-                  </Button>
-                </>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          </div>
-        </div>
-      </BaseContainer>)
-  }
+  } 
 };
 
 export default Profile;
