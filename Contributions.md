@@ -4,7 +4,7 @@
 
 ### Week 1 (24/04/10~24/04/17)
 
-* Ziqi Yang
+Ziqi Yang
 
  1.implement register page in front-end(#2)
 
@@ -17,7 +17,7 @@
   * implement router of lobby page
 
 
-* Zheyuan Fu
+ Zheyuan Fu
 
  1.implement login page in front-end(#3)
 
