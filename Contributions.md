@@ -103,3 +103,67 @@ Ziqi Yang
   * add reply button and show-all-reply button in commentList
   * modify commentList UI to make comments  be displayed more clearly
 
+#### Week 2 (24/05/09~24/05/16)
+
+Ziqi Yang
+
+ 1.implement search page in front-end(#21)
+
+  * write search page ui and write suitable API to get back itemName, TopicName from back-end by keyword.
+  * write a select module to switch the search type from item to topic or from topic to item.
+  * implement router of search page
+
+ 2.add thumbsup function in comment page in front-end(#11)
+ 
+  * write thumbsup function which can count handle thumbsup request. send thumbup operation to back-end and get back total thumbsup number from back-end
+  * write suitable Ui of it.
+
+ Zheyuan Fu
+
+ 1.add averagescore function in comment page in front-end(#12)
+
+  * write score function which can get back average score from back-end
+  * write suitable Ui of it.
+
+ 2.add score(rate) function (#11)
+ 
+  * write score function which can count handle rate request. send score to back-end.
+  * write suitable Ui of it.(five stars)
+
+ 3.modify commentList function and ui in front-end(#13)
+ 
+  * add reply button and show-all-reply button in commentList
+  * modify commentList UI to make comments  be displayed more clearly
+
+
+#### Week 3 (24/05/16~24/05/24)
+
+Ziqi Yang
+
+ 1.implement search page in front-end(#21)
+
+  * write search page ui and write suitable API to get back itemName, TopicName from back-end by keyword.
+  * write a select module to switch the search type from item to topic or from topic to item.
+  * implement router of search page
+
+ 2.add thumbsup function in comment page in front-end(#11)
+ 
+  * write thumbsup function which can count handle thumbsup request. send thumbup operation to back-end and get back total thumbsup number from back-end
+  * write suitable Ui of it.
+
+ Zheyuan Fu
+
+ 1.add averagescore function in comment page in front-end(#12)
+
+  * write score function which can get back average score from back-end
+  * write suitable Ui of it.
+
+ 2.add score(rate) function (#11)
+ 
+  * write score function which can count handle rate request. send score to back-end.
+  * write suitable Ui of it.(five stars)
+
+ 3.modify commentList function and ui in front-end(#13)
+ 
+  * add reply button and show-all-reply button in commentList
+  * modify commentList UI to make comments  be displayed more clearly
