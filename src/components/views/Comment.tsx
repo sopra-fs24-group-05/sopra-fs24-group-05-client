@@ -136,6 +136,8 @@ const Comment = () => {
   // const [unfoldAllReply, setUnfoldAllReply] = useState(false);
   const [unfoldedComments, setUnfoldedComments] = useState([]);
   const ws = useRef(null);
+  const [currentUser, setCurrentUser] = useState<User>(JSON.parse(localStorage.getItem("currentUser")) as User);
+  const identity = currentUser.identity;
 
   useEffect(() => {
     async function fetchData() {
@@ -272,11 +274,25 @@ const Comment = () => {
       }
     });
   }
-  const sendReply = (commentId) => {
+  const sendReply = async (commentId) => {
     const commentOwnerId = localStorage.getItem("currentUserId");
     const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
     const commentOwnerName = commentOwner.username;
-    api.post("reply/create", { fatherCommentId: commentId, content: replyContent, commentOwnerId: commentOwnerId, commentOwnerName:commentOwnerName, commentItemId: localStorage.getItem("currentItemId"), thumbsUpNum: 0});
+    
+    try {
+      api.post("reply/create", { fatherCommentId: commentId, content: replyContent, commentOwnerId: commentOwnerId, commentOwnerName:commentOwnerName, commentItemId: localStorage.getItem("currentItemId"), thumbsUpNum: 0});
+      alert("Successfully Reply!");
+      setReplyContent("");
+      const responseUpdatedReplyList = await api.get(`reply/get/${commentId}`);
+      setReplyCommentList(responseUpdatedReplyList.data);
+    } catch (error) {
+      console.error(
+        `Something went wrong while fetching the chat history: \n${handleError(
+          error
+        )}`
+      );
+    }
+    reply(commentId);
   }
   // const showAllReply = (commentId) =>{
   //   alert(commentId);
@@ -306,6 +322,8 @@ const Comment = () => {
       alert("Successfully create!");
       const responseComments = await api.get(`/comments/itemId/${localStorage.getItem("currentItemId")}`);
       setCommentList(responseComments.data);
+      const responseScore = await api.get(`/${localStorage.getItem("currentItemId")}/score`);
+      setItemAverageScore(responseScore.data);
     } catch (error) {
       alert(
         `Something went wrong during the create: \n${handleError(error)}`
@@ -330,33 +348,70 @@ const Comment = () => {
     alert("Successfully follow!");
   }
 
-  const doTranslate = async (isTranslated, commentId, content) => {
+  const doTranslate = async (isTranslated, commentId, content, replyList) => {
     try {
       if (isTranslated) {
-        const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
-        if (commentIndex !== -1) {
-          const updatedCommentList = [...commentList];
-          updatedCommentList[commentIndex].content = updatedCommentList[commentIndex].originalContent;
-          updatedCommentList[commentIndex].isTranslated = false;
-          setCommentList(updatedCommentList);
+        if (replyList) {
+          const commentIndex = replyCommentList.findIndex(comment => comment.commentId === commentId);
+          if (commentIndex !== -1) {
+            const updatedCommentList = [...replyCommentList];
+            updatedCommentList[commentIndex].content = updatedCommentList[commentIndex].originalContent;
+            updatedCommentList[commentIndex].isTranslated = false;
+            setReplyCommentList(updatedCommentList);
+          }
+        } else {
+          const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
+          if (commentIndex !== -1) {
+            const updatedCommentList = [...commentList];
+            updatedCommentList[commentIndex].content = updatedCommentList[commentIndex].originalContent;
+            updatedCommentList[commentIndex].isTranslated = false;
+            setCommentList(updatedCommentList);
+          }          
         }
       } else {
-        const responseTranslate = await api.get("/translate", { params: { text: content, targetLanguage: navigator.language } });
-        const translatedContent = responseTranslate.data;
-        const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
-        if (commentIndex !== -1) {
-          const updatedCommentList = [...commentList];
-          updatedCommentList[commentIndex].content = translatedContent;
-          updatedCommentList[commentIndex].originalContent = content;
-          updatedCommentList[commentIndex].isTranslated = true;
-          setCommentList(updatedCommentList);
+        if (replyList) {
+          const responseTranslate = await api.get("/translate", { params: { text: content, targetLanguage: navigator.language } });
+          const translatedContent = responseTranslate.data;
+          const commentIndex = replyCommentList.findIndex(comment => comment.commentId === commentId);
+          if (commentIndex !== -1) {
+            const updatedCommentList = [...replyCommentList];
+            updatedCommentList[commentIndex].content = translatedContent;
+            updatedCommentList[commentIndex].originalContent = content;
+            updatedCommentList[commentIndex].isTranslated = true;
+            setReplyCommentList(updatedCommentList);
+          }
+        } else {
+          const responseTranslate = await api.get("/translate", { params: { text: content, targetLanguage: navigator.language } });
+          const translatedContent = responseTranslate.data;
+          const commentIndex = commentList.findIndex(comment => comment.commentId === commentId);
+          if (commentIndex !== -1) {
+            const updatedCommentList = [...commentList];
+            updatedCommentList[commentIndex].content = translatedContent;
+            updatedCommentList[commentIndex].originalContent = content;
+            updatedCommentList[commentIndex].isTranslated = true;
+            setCommentList(updatedCommentList);
+          }
         }
+        
       }
     } catch (error) {
       console.error("Translation failed:", error);
     }
   };
   
+  const doDeleteItem = (itemId) => {
+    try {
+      api.delete(`/items/${itemId}`);
+      alert("Successfully Delete!");
+      localStorage.removeItem("currentItemId");
+      navigate(`/topic/${localStorage.getItem("currentTopicId")}`);
+    } catch (error) {
+      alert(
+        "Something went wrong while deleting the item! See the console for details."
+      );
+    }
+  }
+
   return (
     <BaseContainer className="comment">
       <div className="comment titlecontainer">
@@ -455,15 +510,15 @@ const Comment = () => {
               >
                 <div className = "comment singlecommentcontainer" >
                   <div className="comment commentownerInformationcontainer">
-                    <div className="comment commentowneravator" >
+                    <div className="comment commentowneravatar" >
                       <img
                         className="comment avatar"
-                        src={comment.commentowneravator}
+                        src={comment.commentOwnerAvatar}
                         onClick={() => doCheckProfile(comment.commentOwnerId)}
                       />
                     </div>
                     <div className="comment commentownerUsername">
-                      {comment.commentOwnerName}:
+                      <strong>{comment.commentOwnerName}</strong>
                     </div>
                   </div>
                   <div className="comment commentcontent">
@@ -522,17 +577,21 @@ const Comment = () => {
                 <div className = "comment unfoldAllReply"onClick={() => showAllReply(comment.commentId)}> Show All Reply </div>
                 {unfoldedComments.includes(comment.commentId) && (
                   <ul className="comment commentReplyList" >
-                    {replyCommentList ? replyCommentList.map((comment, index) =>(
+                    {replyCommentList.length > 0 ? replyCommentList.map((replyComment, index) =>(
                       <li 
                         key={index} 
                       >
                         <div className = "comment singleSonCommentContainer" >
                           <div className = "comment sonCommentOwnerInformationContainer">
-                            <div className="comment sonCommentOwnerAvator" onClick={() => doCheckProfile(comment.commentOwnerId)}>
-                              {}
+                            <div className="comment sonCommentOwnerAvatar" onClick={() => doCheckProfile(replyComment.commentOwnerId)}>
+                              <img
+                                className="comment avatar"
+                                src={replyComment.commentOwnerAvatar}
+                                onClick={() => doCheckProfile(replyComment.commentOwnerId)}
+                              />
                             </div>
                             <div className="comment sonCommentOwnerUsername">
-                              {comment.commentOwnerName} : 
+                              <strong>{replyComment.commentOwnerName}</strong>
                             </div>
                           </div>
                           <div className="comment sonCommentcontent">
@@ -543,8 +602,12 @@ const Comment = () => {
                                 cols="50"
                                 value={content}
                             /> */}
-                            {comment.content}
+                            <br/>
+                            Reply@{comment.commentOwnerName}: {replyComment.content}
                           </div>
+                        </div>
+                        <div className="comment translate">
+                          <div className="comment translateButton" onClick={() => doTranslate(replyComment.isTranslated, replyComment.commentId, replyComment.content, replyCommentList)}>{replyComment.isTranslated ? "Restore" : "Translate"}</div>
                         </div> 
                         <div className="comment reply-line"></div>
                       </li>
@@ -574,7 +637,7 @@ const Comment = () => {
                   </div>                      
                 )}
                 <div className="comment translate">
-                  <div className="comment translateButton" onClick={() => doTranslate(comment.isTranslated, comment.commentId, comment.content)}>{comment.isTranslated ? "Restore" : "Translate"}</div>
+                  <div className="comment translateButton" onClick={() => doTranslate(comment.isTranslated, comment.commentId, comment.content, null)}>{comment.isTranslated ? "Restore" : "Translate"}</div>
                 </div>
                 <div className="comment bottom-line"></div>
                 {/* {comment.commentOwnerName}: {comment.content} */}
@@ -591,6 +654,12 @@ const Comment = () => {
         >
           BACK
         </Button>
+        {identity === "ADMIN" && <Button className="delete"
+          width="20%"
+          onClick={() => doDeleteItem(localStorage.getItem("currentItemId"))}
+        >
+          Delete Item
+        </Button>}
       </div>
     </BaseContainer>
   );

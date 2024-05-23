@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api, handleError } from "helpers/api";
-// import Topic from "models/Topic";
+import User from "models/User";
 import {useNavigate} from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Topic.scss";
@@ -48,7 +48,9 @@ const Topic = () => {
   const [items, setItems] = useState<Item[]>(null);
   const [topicname, setTopicname] = useState<string>(localStorage.getItem("currentTopic"));
   const [sortType, setSortType] = useState<string>("default");
+  const [currentUser, setCurrentUser] = useState<User>(JSON.parse(localStorage.getItem("currentUser")) as User);
   let content = <ul/>;
+  const identity = currentUser.identity;
 
   useEffect(() => {
     async function fetchData() {
@@ -58,16 +60,6 @@ const Topic = () => {
         const responseTopic = await api.get(`/topics/topicName/${topicName}`);
         localStorage.setItem("currentTopicId", responseTopic.data.id);
         const responseitems = await api.get(`/items/byTopicName/${topicName}`);
-        if(sortType=== "popularity"){
-          const responseitems = await api.get(`/items/sortedByCommentCount/${responseTopic.data.id}`);
-          setItems(responseitems.data);
-          console.log(responseitems.data);
-        }
-        if(sortType==="default"){
-          const responseitems = await api.get(`/items/byTopicName/${topicName}`);
-          setItems(responseitems.data);
-          console.log(responseitems.data);
-        }
         // await new Promise((resolve) => setTimeout(resolve, 500));
         // Get the returned item 
         setItems(responseitems.data);
@@ -88,6 +80,32 @@ const Topic = () => {
     fetchData();
   }, []);
  
+  useEffect(() => {
+    const fetchSortedData = async () => {
+      try {
+        if (sortType === "popularity") {
+          const responseitems = await api.get(`/items/sortedByCommentCount/${localStorage.getItem("currentTopicId")}`);
+          setItems(responseitems.data);
+          console.log(responseitems.data);
+        } else if (sortType === "default") {
+          const responseitems = await api.get(`/items/byTopicName/${topicname}`);
+          setItems(responseitems.data);
+          console.log(responseitems.data);
+        } else if (sortType === "score") {
+          const responseitems = await api.get(`/items/sortedByScore/${localStorage.getItem("currentTopicId")}`);
+          setItems(responseitems.data);
+          console.log(responseitems.data);
+        }
+      } catch (error) {
+        alert(
+          "Something went wrong while fetching the item! See the console for details."
+        );
+      }
+    }
+    
+    fetchSortedData();
+  }, [sortType]);
+
   const doBack = () => {
     localStorage.removeItem("currentTopic");
     localStorage.removeItem("currentTopicId");
@@ -103,9 +121,24 @@ const Topic = () => {
     navigate(`/comment/${item.itemId}`);
   }
 
-  // const doChange = () => {
-  //   setChange(!change);
-  // }
+  const doDeleteTopic = (topicName) => {
+    try {
+      if (localStorage.getItem("currentTopic") === "MENSA" || localStorage.getItem("currentTopic") === "COURSE") {
+        alert("Mandatory topic cannot be deleted!");
+        
+        return;
+      }
+      api.delete(`/topics/topicName/${topicName}`);
+      alert("Successfully Delete!");
+      localStorage.removeItem("currentTopic");
+      localStorage.removeItem("currentTopicId");
+      navigate("/topicList");
+    } catch (error) {
+      alert(
+        "Something went wrong while deleting the topic! See the console for details."
+      );
+    }
+  }
 
   return (
     <BaseContainer className="topic">
@@ -115,10 +148,12 @@ const Topic = () => {
         />
         <select
           className="topic select"
-          onChange={(un: string) => setSortType(un)}
+          onChange={(e) => setSortType(e.target.value)}
+          value={sortType}
         >  
-          <option value="popularity">Popularity</option>
           <option value="default">Default</option>
+          <option value="popularity">Popularity</option>
+          <option value="score">Score</option>
         </select>
       </div>
       <div className="topic displaycontainer">
@@ -148,6 +183,12 @@ const Topic = () => {
         >
           Create Item
         </Button>
+        {identity === "ADMIN" && <Button className="delete"
+          width="20%"
+          onClick={() => doDeleteTopic(localStorage.getItem("currentTopic"))}
+        >
+          Delete Topic
+        </Button>}
       </div>
     </BaseContainer>
   );

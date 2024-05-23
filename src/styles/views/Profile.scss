@@ -108,6 +108,19 @@
   &.followItem:hover{
     background-color: lightblue;
   }
+  &.commentList {
+    text-align: left;
+    vertical-align:top;
+    // height: fit-content;
+    height: 200px;
+    padding-left: 15px;
+    padding-right:15px;
+    margin-left: 0px;
+    border: none;
+    color: $textColor;
+    cursor: default;
+  }
+  
   
 
 .playerprofile {
