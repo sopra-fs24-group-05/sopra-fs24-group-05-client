@@ -455,8 +455,12 @@ const Comment = () => {
               >
                 <div className = "comment singlecommentcontainer" >
                   <div className="comment commentownerInformationcontainer">
-                    <div className="comment commentowneravator" onClick={() => doCheckProfile(comment.commentOwnerId)}>
-                      {}
+                    <div className="comment commentowneravator" >
+                      <img
+                        className="comment avatar"
+                        src={comment.commentowneravator}
+                        onClick={() => doCheckProfile(comment.commentOwnerId)}
+                      />
                     </div>
                     <div className="comment commentownerUsername">
                       {comment.commentOwnerName}:

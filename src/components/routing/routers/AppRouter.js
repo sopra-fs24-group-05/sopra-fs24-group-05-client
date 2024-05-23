@@ -17,6 +17,8 @@ import { ProfileGuard } from "../routeProtectors/ProfileGuard";
 import Header from "../../views/Header";
 import Topic from "../../views/Topic"
 import { TopicGuard } from "../routeProtectors/TopicGuard";
+import TopicList from "../../views/TopicList"
+import { TopicListGuard } from "../routeProtectors/TopicListGuard";
 import Search from "../../views/Search";
 import { SearchGuard } from "../routeProtectors/SearchGuard";
 
@@ -65,6 +67,10 @@ const AppRouter = () => {
 
         <Route path="/topic/:topicId" element={<TopicGuard />}>
           <Route path="/topic/:topicId" element={<Topic/>} />
+        </Route>
+
+        <Route path="/topicList" element={<TopicListGuard />}>
+          <Route path="/topicList" element={<TopicList/>} />
         </Route>
 
         <Route path="/createTopic" element={<CreateTopicGuard />}>

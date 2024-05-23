@@ -232,11 +232,16 @@
   }
   &.commentowneravator{
     position: relative;
-    top: 10px;
-    left: 10px;
-    margin-top: 10px;
-    margin-right: 10px;
+    // top: 10px;
+    // left: 10px;
+    // margin-top: 10px;
+    // margin-right: 10px;
     cursor: pointer;
+  }
+  &.avatar {
+    border-radius: 50%; 
+    width: 30px; 
+    height: 30px;
   }
   &.commentcontainer{
     position:relative;

@@ -48,11 +48,11 @@ const Lobby = () => {
           <div className="lobby coursebackground"></div>
           <div className="lobby text-wrapper">COURSE</div>
         </div>
+        <div className="lobby otherbox" onClick={() => {navigate("/topicList");}}>
+          <div className="lobby otherbackground"></div>
+          <div className="lobby text-wrapper">OTHER</div>
+        </div>
       </div>
-      {isAdmin && 
-      <div className="lobby create-box">
-        <div className="lobby create-text-wrapper" onClick={() => doCreate()}>CREATE</div>
-      </div>}
     </div>
   );
 };
