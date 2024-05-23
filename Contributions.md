@@ -49,6 +49,7 @@ Ziqi Yang
   * write profile page ui and write suitable API to get back username and creation date from back end
   * write suitable API to get back followitem List from backend and write a new ui to display it.
   * write suitable API to get back commentlist which includes user's own comment from backend and write a new ui to display it.
+  * implement router of profile page
     
  3.modify comment page in front-end(#8)
  
@@ -70,3 +71,34 @@ Zheyuan Fu
 ## Sprint 2
 
 #### Week 1 (24/05/01~24/05/08)
+
+Ziqi Yang
+
+ 1.implement search page in front-end(#2)
+
+  * write search page ui and write suitable API to get back itemName, TopicName from back-end by keyword.
+  * write a select module to switch the search type from item to topic or from topic to item.
+  * implement router of search page
+
+ 2.add thumbups function in comment page in front-end(#7)
+ 
+  * write lobby page ui and write suitable function of this page which is navigating to two main topics Mensa and Course.
+  * implement router of lobby page
+
+
+ Zheyuan Fu
+
+ 1.implement login page in front-end(#3)
+
+  * write login page ui and write suitable API to put back username, password and let back-end to confirm them.
+  * implement router of login page
+
+ 2.implement header in front-end(#7)
+ 
+  * write header ui and write suitable function of this module which is navigating to lobby page, search page and profile page.
+  * paint search icon and profile icon for header
+
+ 3.implement createitem page in front-end(#5)
+ 
+  * write createitem page ui and write suitable API to post back topicId and let back-end to create new item under the topic.
+  * implement router of createitem page
