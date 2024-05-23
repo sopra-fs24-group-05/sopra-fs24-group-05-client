@@ -107,63 +107,33 @@ Ziqi Yang
 
 Ziqi Yang
 
- 1.implement search page in front-end(#21)
+ 1.modify profile page in front-end(#21)
 
-  * write search page ui and write suitable API to get back itemName, TopicName from back-end by keyword.
-  * write a select module to switch the search type from item to topic or from topic to item.
-  * implement router of search page
+  * add avatar function to make user can upload function
+  * write a suitable API to send back avatar to back-end
+  * write a suitable Ui of it.
 
- 2.add thumbsup function in comment page in front-end(#11)
+ 2.modify commentList in comment page(#13)
  
-  * write thumbsup function which can count handle thumbsup request. send thumbup operation to back-end and get back total thumbsup number from back-end
-  * write suitable Ui of it.
+  * write suitable ui to display avatar of user.
+  * add show-all-reply funciton to display all replies to one comment.
+  * write a suitable API to get back all replies to this comment from back-end.
+
 
  Zheyuan Fu
 
- 1.add averagescore function in comment page in front-end(#12)
+ 1.modify commentList in comment page(#13)
 
-  * write score function which can get back average score from back-end
-  * write suitable Ui of it.
+  * write suitable ui to display all replies
+  * write suitable ui to send reply to comment
+  * write a suitable API to post back a repliy to this comment to back-end.
 
- 2.add score(rate) function (#11)
+
+ 2.add topicList page (#17)
  
-  * write score function which can count handle rate request. send score to back-end.
-  * write suitable Ui of it.(five stars)
-
- 3.modify commentList function and ui in front-end(#13)
- 
-  * add reply button and show-all-reply button in commentList
-  * modify commentList UI to make comments  be displayed more clearly
-
+  * write topiclist page ui and write suitable API to get back all topics from back-end.
+  * add create topic function to let user can create new topic 
+  * implement router of topiclist page
 
 #### Week 3 (24/05/16~24/05/24)
 
-Ziqi Yang
-
- 1.implement search page in front-end(#21)
-
-  * write search page ui and write suitable API to get back itemName, TopicName from back-end by keyword.
-  * write a select module to switch the search type from item to topic or from topic to item.
-  * implement router of search page
-
- 2.add thumbsup function in comment page in front-end(#11)
- 
-  * write thumbsup function which can count handle thumbsup request. send thumbup operation to back-end and get back total thumbsup number from back-end
-  * write suitable Ui of it.
-
- Zheyuan Fu
-
- 1.add averagescore function in comment page in front-end(#12)
-
-  * write score function which can get back average score from back-end
-  * write suitable Ui of it.
-
- 2.add score(rate) function (#11)
- 
-  * write score function which can count handle rate request. send score to back-end.
-  * write suitable Ui of it.(five stars)
-
- 3.modify commentList function and ui in front-end(#13)
- 
-  * add reply button and show-all-reply button in commentList
-  * modify commentList UI to make comments  be displayed more clearly
