@@ -158,6 +158,9 @@ Ziqi Yang
 
  4. modify ui(#16)
 
+  * modify comment ui
+  * modify profile ui
+
  Zheyuan Fu
 
  1.modify hotitem fucntion in search page(#21)
@@ -176,5 +179,6 @@ Ziqi Yang
   * write a new ui for login page
   * write a new ui for register page
   * write a new ui for lobby page
+  * write a new ui for search page
     
 
