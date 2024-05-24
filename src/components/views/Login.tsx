@@ -75,9 +75,9 @@ const Login = () => {
     <BaseContainer className="login">
       <div className="login pagecontainer">
         <div className = "login introcontainer">
-          <h1 className = "login introduction">Find Everything you want!</h1>
-          <h1 className = "login introduction">Comment Everything you want!</h1>
-          <h1 className = "login introduction">Score Everything you want!</h1>
+          <h1 className = "login introduction">Find Everything here!</h1>
+          <h1 className = "login introduction">Comment Everything here!</h1>
+          <h1 className = "login introduction">Score Everything here!</h1>
         </div>
         <div className="login logincontainer">
           <div className ="login welcometitle">
@@ -104,7 +104,6 @@ const Login = () => {
                 Login
               </Button>
               <Button className="register"
-                // disabled={!username || !name}
                 width="100%"
                 onClick={() => naviRegister()}
               >

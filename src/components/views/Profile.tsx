@@ -29,7 +29,7 @@ const setEditPassword = (newValue) => { editPassword = newValue; };
 const PlayerProfile = ({ user }: { user: User }) => (
   <div className="playerProfile container">
     <div className="player">
-      <span>Username: </span>
+      <span className ="profile title">Username: </span>
       {!editStatus ? (user.username) : (
         <input
           className="profile editinput"
@@ -41,7 +41,7 @@ const PlayerProfile = ({ user }: { user: User }) => (
     </div>
     {editStatus && 
       <div className="player">
-        <span>Password: </span>
+        <span className ="profile title">Password: </span>
         <input
           className="profile editinput"
           type="text"
@@ -51,7 +51,7 @@ const PlayerProfile = ({ user }: { user: User }) => (
       </div>
     }
     <div className="player">
-      <span>Creation Date: </span> 
+      <span className ="profile title">Creation Date: </span> 
       {new Date(user.createDate).toLocaleDateString("zh-CN", {
         year: "numeric",
         month: "2-digit",
@@ -92,8 +92,8 @@ const UserFormField = (props) => {
 
   try {
     return (
-      <div className="profile field">
-        <h2>{props.module}</h2>
+      <div className="profile field1">
+        <h2 className ="profile title">{props.module}</h2>
         <label className="profile label">{props.label}</label>
         <div className="profile avatar-container">
           <img
@@ -193,7 +193,7 @@ const Profile = () => {
     switch (props.module) {
     case "Follows":
       content = (
-        <ul>
+        <ul className = "profile followList">
           {followItemList.length > 0 ? followItemList.map((item, index) => (
             <li 
               className="profile followItem"
@@ -252,8 +252,8 @@ const Profile = () => {
     };
   
     return (
-      <div className="profile field">
-        <h2>{props.module}</h2>
+      <div className="profile field2">
+        <h2 className ="profile title">{props.module}</h2>
         {content}
       </div>
     );
@@ -401,6 +401,7 @@ const Profile = () => {
       <BaseContainer className="profile">
         <div className="profile container">
           <div className="profile form">
+            <h1 className="profile bigtitle">User Profile</h1>
             <UserFormField
               module="Information"
               user={user}
@@ -445,6 +446,7 @@ const Profile = () => {
       <BaseContainer className="profile">
         <div className="profile container">
           <div className="profile form">
+            <h1 className="profile bigtitle">User Profile</h1>
             <UserFormField
               module="Information"
               user={user}
