@@ -3,7 +3,7 @@ import { api, handleError } from "helpers/api";
 // import Topic from "models/Topic";
 import User from "models/User";
 import Item from "models/Item";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ReplyButton, Button } from "components/ui/Button";
 import { ChatButton } from "components/ui/ChatButton";
 import "styles/views/Comment.scss";
@@ -113,6 +113,7 @@ const CommentContentForm =(props)=> {
 
 const Comment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState<string>(null);
   const [content, setContent] = useState<string>(null);
   const [item, setItem] = useState<Item>(null);
