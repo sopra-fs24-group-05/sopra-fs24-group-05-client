@@ -35,6 +35,29 @@ FormField.propTypes = {
   isPassword: PropTypes.bool,
 };
 
+const FormField2 = (props) => {
+  return (
+    <div className="register field">
+      <label className="register label">{props.label}</label>
+      <input
+        className="register input"
+        placeholder="for administrators here..."
+        value={props.value}
+        type={props.isPassword ? "password" : "text"}
+        onChange={(e) => props.onChange(e.target.value)}
+      />
+    </div>
+  );
+};
+
+FormField2.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  isPassword: PropTypes.bool,
+};
+
+
 const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>(null);
@@ -78,7 +101,7 @@ const Register = () => {
               isPassword={true}
               onChange={(n) => setPassword(n)}
             />
-            <FormField
+            <FormField2
               label="Register Code (optional)"
               value={token}
               onChange={(n) => setToken(n)}
