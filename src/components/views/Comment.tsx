@@ -142,6 +142,11 @@ const Comment = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        if (localStorage.getItem("currentTopic") === null) {
+          const responseTopic = await api.get(`/topics/topicId/${localStorage.getItem("currentTopicId")}`);
+          localStorage.setItem("currentTopic", responseTopic.data.topicName);
+          setTopicname(responseTopic.data.topicName);
+        }
         const itemId = localStorage.getItem("currentItemId");
         // //This page will be reached only by clicking the item you want to comment
         const responseItem = await api.get(`/items/getByItemId/${itemId}`);
@@ -153,18 +158,6 @@ const Comment = () => {
 
         const responseComments = await api.get(`/comments/itemId/${itemId}`);
         setCommentList(responseComments.data);
-        // if (commentList) {
-        // const updatedCommentList = commentList.map(comment => ({
-        //   ...comment,
-        //   isTranslated: false
-        // }));
-        // setCommentList(updatedCommentList);
-        // // This is just some data for you to see what is available.
-        // // Feel free to remove it.
-        // console.log("request to:", response.request.responseURL);
-        // console.log("status code:", response.status);
-        // console.log("status text:", response.statusText);
-        // console.log("requested data:", response.data);
         const User = JSON.parse(localStorage.getItem("currentUser"));
         setUsername(User.username)
         // // See here to get more data.

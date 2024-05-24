@@ -47,6 +47,11 @@ const Login = () => {
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
+      if(user.identity === "BANNED"){
+        alert("You have been banned! Please contact administrator for more information.");
+        
+        return;
+      }
       const userStr = JSON.stringify(user);
 
       // Store the token,the into the local storage.
