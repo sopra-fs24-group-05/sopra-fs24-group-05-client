@@ -137,3 +137,44 @@ Ziqi Yang
 
 #### Week 3 (24/05/16~24/05/24)
 
+Ziqi Yang
+
+ 1.modify chatspace function(#20)
+
+  * add websocket API in front-end
+  * make websocket API be connected with back-end
+  * debug websocket function and make it work fluently
+
+ 2.add edit function to profile page(#19)
+ 
+  * add edit button to profile page
+  * write suitable API to update user's information of back-end
+
+ 3.add administrator function(#)
+ 
+  * add a new identity "administrator"
+  * add ban function, delete function to administrator, which means that administrator can ban someone or delete unsuitable topics and items.
+  * administrator can release user from ban lists.
+
+ 4. modify ui(#16)
+
+ Zheyuan Fu
+
+ 1.modify hotitem fucntion in search page(#21)
+
+  * modify API and make front-end can receive three hottest items from back-end
+  * modify hotitem fucntion and make users can navigate to items by click them in hotitem.
+
+ 2.add sort function in createitem page (#17)
+ 
+  * write a new select button and make user can choose "sorttype" by switch the button
+  * add sort function and make items be sorted by the way in sorttype
+  * write suitable API to get different sorted items from back-end.
+
+ 2.modify ui(#16)
+ 
+  * write a new ui for login page
+  * write a new ui for register page
+  * write a new ui for lobby page
+    
+
