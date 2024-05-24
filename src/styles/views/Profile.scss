@@ -6,16 +6,15 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
-    margin-top: 100px;
+    margin-top: 15px;
   }
   &.form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: -85px;
     width: 60%;
     max-width: 80em;
-    height: 50em;
+    height: 57em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -44,11 +43,26 @@
       margin-left: 40px;
     }
   }
-  &.field {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    outline: auto;
+  &.field1 {
+    position:relative;
+    margin-top:50px;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    border: 1px solid black;
+    border-radius: 0.75em;
+    box-shadow: $dropShadow;
+    // overflow: hidden;
+  }
+    &.field2 {
+    position:relative;
+    margin-top:10px;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    border: 1px solid black;
+    border-radius: 0.75em;
+    box-shadow: $dropShadow;
     // overflow: hidden;
   }
   &.input {
@@ -85,8 +99,8 @@
   }
   &.avatar-container {
     position: absolute;
-    top: 10;
-    right: 100px;
+    top: 2px;
+    right: 80px;
     margin-top: 10px;
     margin-right: 10px;
     cursor: pointer;
@@ -95,6 +109,18 @@
     border-radius: 50%; 
     width: 100px; 
     height: 100px;
+  }
+  &.followList {
+    text-align: left;
+    vertical-align:top;
+    // height: fit-content;
+    height: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+    color: $textColor;
+    border-radius: 0.75em;
+    cursor: default;
   }
   &.followButton {
     position: absolute;
@@ -113,12 +139,23 @@
     vertical-align:top;
     // height: fit-content;
     height: 200px;
-    margin-left: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
     border: none;
     color: $textColor;
+    border-radius: 0.75em;
     cursor: default;
   }
   &.bannedList {
+    text-align: left;
+    vertical-align:top;
+    // height: fit-content;
+    height: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+    color: $textColor;
+    border-radius: 0.75em;
     cursor: pointer;
   }
   &.bannedList:hover{
@@ -225,5 +262,14 @@
     // font-family: $fontMono;
     font-weight: 300;
   }
+}
+&.title {
+  /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+  margin-left: 10px;
+}
+&.bigtitle {
+  /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+  margin-bottom: -30px;
+  @include center;
 }
 }
