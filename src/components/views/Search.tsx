@@ -168,7 +168,7 @@ const Search = () => {
         <div className="search hotTopicForm">
           <h1 style={{textAlign: "center"}}>HOT ITEMS</h1>
           <ul className="topic hotTopicList">
-            {hotItemList ? hotItemList.map((item, index) => (
+            {hotItemList ? hotItemList.slice(0, 5).map((item, index) => (
               <li 
                 key={index}
                 onClick={() => doCheckItem(item.itemId, item.topic.topicName, item.topic.topicId)}

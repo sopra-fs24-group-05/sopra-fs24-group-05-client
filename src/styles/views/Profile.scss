@@ -113,16 +113,86 @@
     vertical-align:top;
     // height: fit-content;
     height: 200px;
-    padding-left: 15px;
-    padding-right:15px;
     margin-left: 0px;
     border: none;
     color: $textColor;
     cursor: default;
   }
+  &.bannedList {
+    cursor: pointer;
+  }
+  &.bannedList:hover{
+    background-color: lightblue;
+  }
+  &.editinput{
+    position:relative;
+    width: 200px;
+    border: auto;
+    border-radius: 0.75em;
+    color: black;
+    resize: none;
+  }
+  &.singlecommentcontainer{
+    display:flex;
+    flex-direction: column;
+    // margin-top: 20px;
+  }
+  &.commentownerInformationcontainer{
+    display:flex;
+    flex-direction: row;
+    // margin-top: 20px;
+  }
+  &.commentowneravatar{
+    position: relative;
+    // top: 10px;
+    // left: 10px;
+    // margin-top: 10px;
+    // margin-right: 10px;
+    cursor: pointer;
+  }
+  // &.avatar {
+  //   border-radius: 50%; 
+  //   width: 30px; 
+  //   height: 30px;
+  // }
+  &.commentcontainer{
+    position:relative;
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    // margin-top: 20px;
+  }
+  &.replyandthumbupscontainer{
+    display:flex;
+    flex-direction: row;
+    // margin-top: 20px;
+  }
+  &.thumbups {
+    display: flex;
+    flex-direction: row;
+  }
+  &.thumbupsButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    // cursor: pointer;
+    // &:hover {
+    //   transform: translateY(-2px);
+    // }
+  }
+  &.thumbupsNumber {
+    margin-left: 5px;
+    margin-top: 1em;
+    @include center;
+  }
+  &.translateButton {
+    cursor: pointer;
+  }
+  &.bottom-line {
+    // margin-left: 80px;
+    border-bottom: 1px solid black;
+    margin-top: 5px;
+  }
   
-  
-
 .playerprofile {
   &.container {
     margin: 0.5em 0;
