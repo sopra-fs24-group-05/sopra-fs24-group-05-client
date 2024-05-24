@@ -310,7 +310,7 @@ const Comment = () => {
       const commentOwnerId = localStorage.getItem("currentUserId");
       const commentOwner = JSON.parse(localStorage.getItem("currentUser")) as User;
       const commentOwnerName = commentOwner.username;
-      setCommentStatus(1);
+      // setCommentStatus(1);
       const requestBody = JSON.stringify({ commentOwnerName: commentOwnerName, commentItemId: commentItemId, commentOwnerId: commentOwnerId, content: content, score: commentRate});
       await api.post("/comments/create", requestBody);
       alert("Successfully create!");
@@ -469,7 +469,7 @@ const Comment = () => {
       <div className="comment commentcontainer">
         <div className="comment commentform">
           <FormFieldComment
-            label="YOUR COMMENT"
+            label="YOUR COMMENT(No more than 250 words)"
             value={content}
             onChange={(un: string) => setContent(un)}
           />
@@ -496,7 +496,7 @@ const Comment = () => {
       </div>
       <div className="comment displaycontainer">
         <div className="comment displayform">
-          <label className="comment commentListTitle">ALL COMMENTS</label>
+          <label className="comment commentListTitle">ALL COMMENTS（All reply must be in 250 words）</label>
           <ul className="comment commentList">
             {commentList ? commentList.map((comment, index) => (
               <li 

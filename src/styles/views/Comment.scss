@@ -179,6 +179,7 @@
     padding-left: 15px;
     padding-right:15px;
     margin-left: -4px;
+    margin-top: 5px;
     border: none;
     border-radius: 0.75em;
     color: black;
@@ -228,6 +229,7 @@
   &.commentownerInformationcontainer{
     display:flex;
     flex-direction: row;
+    align-items: center;
     // margin-top: 20px;
   }
   &.commentowneravatar{
@@ -353,11 +355,12 @@
   &.singleSonCommentContainer{
     display:flex;
     flex-direction: row;
-    // margin-top: 20px;
+     margin-top: -15px;
   }
   &.sonCommentOwnerInformationContainer{
     display:flex;
     flex-direction: row;
+    align-items:center;
     // margin-top: 20px;
   }
   &.sonCommentOwnerAvatar{
@@ -371,7 +374,10 @@
   &.sonCommentcontent{
     position:relative;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
-    @include center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    margin-left: -88px;
     // margin-top: 20px;
   }
   &.unfoldAllReply:hover{

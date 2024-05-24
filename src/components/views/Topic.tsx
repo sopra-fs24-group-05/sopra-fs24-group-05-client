@@ -51,6 +51,7 @@ const Topic = () => {
   const [currentUser, setCurrentUser] = useState<User>(JSON.parse(localStorage.getItem("currentUser")) as User);
   let content = <ul/>;
   const identity = currentUser.identity;
+  let index=1;
 
   useEffect(() => {
     async function fetchData() {
@@ -161,10 +162,17 @@ const Topic = () => {
           <ul className="topic list">
             {items ? items.map((item, index) => (
               <li 
-                key={index}
+                key={index++}
                 onClick={() => doComment(item)}
               >
-                {item.itemName}
+                <div className="topic itemList">
+                  <div className ="topic itemcontainer">
+                    No.{index+1} {item.itemName}
+                  </div>
+                  <div className ="topic scorecontainer">
+                    {item.averageScore}
+                  </div>
+                </div>
               </li>
             )) : <div>Loading...</div>}
           </ul>

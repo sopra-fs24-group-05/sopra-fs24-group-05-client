@@ -137,4 +137,21 @@
     background-color: lightblue;
     cursor: pointer;
   }
+  &.itemList{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &.itemcontainer{
+    display:flex;
+    margin-left:5px;
+    justify-content: flex-start;
+  }
+  &.scorecontainer{
+    position:relative;
+    display: flex;
+
+    justify-content: flex-end;
+  }
 }
