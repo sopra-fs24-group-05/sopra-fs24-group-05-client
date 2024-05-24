@@ -150,7 +150,7 @@ Ziqi Yang
   * add edit button to profile page
   * write suitable API to update user's information of back-end
 
- 3.add administrator function(#)
+ 3.add administrator function(#22)
  
   * add a new identity "administrator"
   * add ban function, delete function to administrator, which means that administrator can ban someone or delete unsuitable topics and items.
