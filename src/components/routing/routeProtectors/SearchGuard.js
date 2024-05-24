@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
  * @Guard
  * @param props
  */
+<<<<<<<< HEAD:src/components/routing/routeProtectors/SearchGuard.js
 export const SearchGuard = () => {
   if (localStorage.getItem("token")) {
 
@@ -21,5 +22,17 @@ export const SearchGuard = () => {
 };
 
 SearchGuard.propTypes = {
+========
+export const LobbyGuard = () => {
+  if (localStorage.getItem("token")) {
+    
+    return <Outlet />;
+  }
+  
+  return <Navigate to="/login" replace />;
+};
+
+LobbyGuard.propTypes = {
+>>>>>>>> temp-branch:src/components/routing/routeProtectors/LobbyGuard.js
   children: PropTypes.node
 };
