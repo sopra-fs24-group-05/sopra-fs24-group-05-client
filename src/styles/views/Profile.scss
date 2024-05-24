@@ -158,7 +158,10 @@
     border-radius: 0.75em;
     cursor: pointer;
   }
-  &.bannedList:hover{
+  &.bannedUser {
+    cursor: pointer;
+  }
+  &.bannedUser:hover{
     background-color: lightblue;
   }
   &.editinput{

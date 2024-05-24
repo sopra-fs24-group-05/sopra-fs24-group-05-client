@@ -140,9 +140,9 @@ const Profile = () => {
   const [editStatus, setLocalEditStatus] = useState(getEditStatus());
   const [editUsername, setLocalEditUsername] = useState(getEditUsername());
   const [editPassword, setLocalEditPassword] = useState(getEditPassword());
-  const [followItemList, setFollowItemList] = useState<Item[]>([]);
-  const [pubCommentList, setPubCommentList] = useState<Comment[]>([]);
-  const [bannedList, setBannedList] = useState<User[]>([]);
+  const [followItemList, setFollowItemList] = useState<Item[]>(null);
+  const [pubCommentList, setPubCommentList] = useState<Comment[]>(null);
+  const [bannedList, setBannedList] = useState<User[]>(null);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -194,56 +194,66 @@ const Profile = () => {
     case "Follows":
       content = (
         <ul className = "profile followList">
-          {followItemList.length > 0 ? followItemList.map((item, index) => (
-            <li 
-              className="profile followItem"
-              key={index} 
-              onClick={() => {localStorage.setItem("currentTopicId", item.followItemTopicId); localStorage.setItem("currentItemId", item.followItemId);navigate(`/comment/${item.followItemId}`)}}
-            >
-              {item.followItemname}
-            </li>
-          )) : <div>No Follow Items.</div>}
+          {followItemList === null ? (<div>Loading...</div>) : (
+            followItemList.length === 0 ? (<div>No Follow Items.</div>) : (
+              followItemList.map((item, index) => (
+                <li 
+                  className="profile followItem"
+                  key={index} 
+                  onClick={() => {localStorage.setItem("currentTopicId", item.followItemTopicId); localStorage.setItem("currentItemId", item.followItemId);navigate(`/comment/${item.followItemId}`)}}
+                >
+                  {item.followItemname}
+                </li>
+              )))
+          )}
         </ul>
       );
       break;
     case "Comments":
       content = (
         <ul className="profile commentList">
-          {pubCommentList ? (pubCommentList.map((comment, index) => (
-            <li key={index}>
-              <div className = "profile singlecommentcontainer" >
-                <div className="profile commentownerInformationcontainer">
-                  <div className="profile commentownerUsername">
-                    <strong>{comment.commentItemTopicName}/{comment.commentItemName}</strong>
-                  </div>
-                </div>
-                <div className="profile commentcontent">
-                  {comment.content}
-                </div>
-                <div className="profile replyandthumbupscontainer">
-                  <div className="profile thumbups">
-                    <div className="profile thumbupsButton">
-                      <svg className="thumbupsLikedIcon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M860.032 341.12h-182.08c7.488-17.408 14.72-38.528 18.048-60.544 5.952-39.872 4.992-87.36-18.368-129.088-21.76-38.848-50.304-60.928-83.52-61.376-30.72-0.384-53.888 18.176-65.728 33.408a199.296 199.296 0 0 0-32.064 59.264l-1.92 5.184c-5.44 14.976-10.88 29.952-23.04 51.456-19.712 34.816-48.832 56.128-77.696 74.368a391.936 391.936 0 0 1-30.976 17.92v552.448a4621.952 4621.952 0 0 0 351.872-5.312c51.264-2.752 100.672-28.544 127.488-76.032 24.32-43.136 55.168-108.16 74.368-187.264 20.416-84.16 24.64-152.704 24.576-195.968-0.128-46.336-38.72-78.4-80.96-78.4z m-561.344 541.312V341.12H215.808c-59.712 0-113.408 42.048-120.896 104.32a1376 1376 0 0 0 0.64 330.368c7.36 58.688 56.128 100.032 113.024 102.848 25.024 1.28 55.552 2.56 90.112 3.712z" fill="#000000"></path></svg>
+          {pubCommentList === null ? (<div>Loading...</div>) : (
+            pubCommentList.length === 0 ? (<div>No Comment.</div>) : (
+              pubCommentList.map((comment, index) => (
+                <li key={index}>
+                  <div className = "profile singlecommentcontainer" >
+                    <div className="profile commentownerInformationcontainer">
+                      <div className="profile commentownerUsername">
+                        <strong>{comment.commentItemTopicName}/{comment.commentItemName}</strong>
+                      </div>
                     </div>
-                    <div className="profile thumbupsNumber">{comment.thumbsUpNum}</div>
+                    <div className="profile commentcontent">
+                      {comment.content}
+                    </div>
+                    <div className="profile replyandthumbupscontainer">
+                      <div className="profile thumbups">
+                        <div className="profile thumbupsButton">
+                          <svg className="thumbupsLikedIcon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M860.032 341.12h-182.08c7.488-17.408 14.72-38.528 18.048-60.544 5.952-39.872 4.992-87.36-18.368-129.088-21.76-38.848-50.304-60.928-83.52-61.376-30.72-0.384-53.888 18.176-65.728 33.408a199.296 199.296 0 0 0-32.064 59.264l-1.92 5.184c-5.44 14.976-10.88 29.952-23.04 51.456-19.712 34.816-48.832 56.128-77.696 74.368a391.936 391.936 0 0 1-30.976 17.92v552.448a4621.952 4621.952 0 0 0 351.872-5.312c51.264-2.752 100.672-28.544 127.488-76.032 24.32-43.136 55.168-108.16 74.368-187.264 20.416-84.16 24.64-152.704 24.576-195.968-0.128-46.336-38.72-78.4-80.96-78.4z m-561.344 541.312V341.12H215.808c-59.712 0-113.408 42.048-120.896 104.32a1376 1376 0 0 0 0.64 330.368c7.36 58.688 56.128 100.032 113.024 102.848 25.024 1.28 55.552 2.56 90.112 3.712z" fill="#000000"></path></svg>
+                        </div>
+                        <div className="profile thumbupsNumber">{comment.thumbsUpNum}</div>
+                      </div>
+                    </div>
+                    <div className="profile translate">
+                      <div className="profile translateButton" onClick={() => doTranslate(comment.isTranslated, comment.commentId, comment.content)}>{comment.isTranslated ? "Restore" : "Translate"}</div>
+                    </div>
+                    <div className="profile bottom-line"></div>
                   </div>
-                </div>
-                <div className="profile translate">
-                  <div className="profile translateButton" onClick={() => doTranslate(comment.isTranslated, comment.commentId, comment.content)}>{comment.isTranslated ? "Restore" : "Translate"}</div>
-                </div>
-                <div className="profile bottom-line"></div>
-              </div>
-            </li>
-          ))) : (<div>Loading...</div>)}
+                </li>
+              )
+              )))
+          }
         </ul>
       )
       break;
     case "Banned List":
       content = (
         <ul className="profile bannedList">
-          {bannedList.length > 0 ? (bannedList.map((user, index) => (
-            <li key={index} onClick={() => doCheckProfile(user.userId)}>{user.username}</li>
-          ))) : (bannedList.length === 0 ? (<div>No banned user.</div>) : (<div>Loading...</div>))}
+          {bannedList === null ? (<div>Loading...</div>) : (
+            bannedList.length === 0 ? (<div>No Banned User.</div>) : (
+              bannedList.map((user, index) => (
+                <li className="profile bannedUser" key={index} onClick={() => doCheckProfile(user.userId)}>{user.username}</li>
+              )))
+          )}
         </ul>
       )
       break;
@@ -340,9 +350,9 @@ const Profile = () => {
     setEditStatus(false);
     setEditUsername("");
     setEditPassword("");
-    setFollowItemList([]);
-    setPubCommentList([]);
-    setBannedList([]);
+    setFollowItemList(null);
+    setPubCommentList(null);
+    setBannedList(null);
     console.log(editStatus);
     console.log(editUsername);
     console.log(editPassword);
